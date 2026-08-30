@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#5A3A1E"/><stop offset="1" stop-color="#241A12"/></linearGradient></defs>
+  <rect width="512" height="512" rx="114" fill="url(#g)"/>
+  <!-- 地球（経緯線）-->
+  <circle cx="256" cy="318" r="118" fill="none" stroke="#E8834A" stroke-width="26"/>
+  <g stroke="#E8834A" stroke-width="19" fill="none">
+    <path d="M138 318 L374 318"/>
+    <ellipse cx="256" cy="318" rx="52" ry="118"/>
+  </g>
+  <!-- 上向き矢印 -->
+  <g stroke="#F5C542" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M256 186 L256 72"/>
+    <path d="M204 124 L256 72 L308 124"/>
+  </g>
+</svg>
