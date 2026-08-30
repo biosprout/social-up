@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#E8834A">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SOCIAL UP!">
+<title>SOCIAL UP! 中学社会</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1A1410;--panel:#26201A;--panel2:#332A22;
+    --primary:#E8834A;--primary-dark:#C4652F;--accent:#F5C542;
+    --danger:#FF6B7A;--text:#F5EFE8;--sub:#B5A08C;--border:#40352B;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:'Noto Sans JP',system-ui,sans-serif;color:var(--text);
+    background:radial-gradient(circle at 20% 0%,#3A2A1C 0%,#1A1410 55%);min-height:100dvh;display:flex;justify-content:center}
+  .app{width:100%;max-width:480px;min-height:100dvh;display:flex;flex-direction:column;position:relative}
+  .topbar{padding:18px 20px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;
+    background:linear-gradient(180deg,#0E1A17 70%,rgba(14,26,23,0))}
+  .brand .logo{font-family:'Poppins';font-weight:800;font-size:23px;letter-spacing:-.5px;color:var(--primary)}
+  .brand .logo span{color:var(--accent)}
+  .brand .sub{font-size:11px;color:var(--sub);font-weight:500;margin-top:2px}
+  .rankpill{background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:7px 14px;font-size:12px;font-weight:800;color:var(--accent)}
+  .screen{flex:1;overflow-y:auto;padding:6px 20px 40px;-webkit-overflow-scrolling:touch}
+  .statcard{background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px;display:flex;align-items:center;gap:18px}
+  .ring{position:relative;width:92px;height:92px;flex:0 0 auto}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .in b{font-family:'Poppins';font-size:23px;font-weight:800;color:var(--primary);line-height:1}
+  .ring .in small{font-size:9px;color:var(--sub);font-weight:600;margin-top:2px}
+  .stinfo h2{font-size:15px;font-weight:900;margin-bottom:8px}
+  .stinfo .row{display:flex;gap:16px}
+  .stinfo .row div{font-size:11px;color:var(--sub);font-weight:600}
+  .stinfo .row b{display:block;font-family:'Poppins';font-size:19px;color:var(--text);font-weight:700}
+  .label{font-size:12px;font-weight:800;color:var(--sub);margin:10px 2px 10px;letter-spacing:.3px}
+  .lvrow{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:6px}
+  .lvbtn{background:var(--panel);border:1.5px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;transition:.15s}
+  .lvbtn:active{transform:scale(.97)}
+  .lvbtn .n{font-size:13px;font-weight:900;display:block}
+  .lvbtn .d{font-size:9px;color:var(--sub);font-weight:600;margin-top:3px;display:block}
+  .lvbtn.on{background:var(--primary);border-color:var(--primary);color:#241A12}
+  .lvbtn.on .d{color:rgba(8,32,26,.7)}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .fbtn{background:var(--panel);border:1.5px solid var(--border);border-radius:15px;padding:14px;cursor:pointer;transition:.15s;text-align:left}
+  .fbtn:active{transform:scale(.98)}
+  .fbtn .ic{font-size:20px}
+  .fbtn .n{font-size:13px;font-weight:800;margin-top:5px}
+  .fbtn .m{font-size:10px;color:var(--sub);font-weight:600;margin-top:3px}
+  .fbtn .bar{height:4px;background:var(--border);border-radius:99px;margin-top:8px;overflow:hidden}
+  .fbtn .bar i{display:block;height:100%;background:var(--primary);border-radius:99px}
+  .btn{border:none;border-radius:14px;font-family:inherit;font-weight:800;font-size:15px;padding:15px;cursor:pointer;transition:.15s;width:100%}
+  .btn:active{transform:scale(.98)}
+  .btn-primary{background:var(--primary);color:#241A12}
+  .btn-ghost{background:var(--panel);color:var(--primary);border:1.5px solid var(--border)}
+  .btn-accent{background:var(--accent);color:#2A1D00}
+  .back{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--sub);font-weight:700;font-size:14px;cursor:pointer;padding:6px 2px;margin-bottom:6px;font-family:inherit}
+  .qhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .qhead .left{display:flex;align-items:center;gap:10px}
+  .qhead h2{font-size:16px;font-weight:900}
+  .timer{font-family:'Poppins';font-weight:800;font-size:20px;color:var(--accent)}
+  .timer.warn{color:var(--danger)}
+  .combo{font-family:'Poppins';font-weight:800;font-size:13px;color:var(--accent)}
+  .bar-top{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:16px}
+  .bar-top i{display:block;height:100%;background:var(--primary);border-radius:99px;transition:width .3s}
+  .qcard{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:22px 18px;box-shadow:var(--shadow);margin-bottom:14px}
+  .qmeta{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .tagf{font-size:10px;font-weight:800;color:var(--primary);letter-spacing:.4px}
+  .taglv{font-size:9px;padding:3px 8px;border-radius:7px;font-weight:800}
+  .taglv.easy{background:#3A2A18;color:#F0B070}
+  .taglv.std{background:#3A3218;color:var(--accent)}
+  .taglv.hard{background:#3D1D22;color:var(--danger)}
+  .taglv.ibo{background:#2A1A3D;color:#C78BFF}
+  .lvbtn .n{font-size:12px}
+  .qtext{font-size:17px;font-weight:700;line-height:1.55}
+  .choices{display:grid;gap:9px}
+  .choice{background:var(--panel);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;font-family:inherit;font-size:15px;font-weight:700;
+    color:var(--text);cursor:pointer;text-align:left;transition:.12s;line-height:1.45}
+  .choice:active{transform:scale(.99)}
+  .choice.correct{background:var(--primary);border-color:var(--primary);color:#241A12}
+  .choice.wrong{background:var(--danger);border-color:var(--danger);color:#2A0009}
+  .choice.dim{opacity:.4}
+  .exp{border-radius:14px;padding:15px;margin-top:12px;font-size:13px;line-height:1.65;background:var(--panel2);border:1px solid var(--border)}
+  .exp b{color:var(--primary)}
+  .result{text-align:center;padding:26px 10px}
+  .result .rank{font-family:'Poppins';font-size:62px;font-weight:800;line-height:1;color:var(--accent)}
+  .result .emoji{font-size:48px;margin-bottom:4px}
+  .result .big{font-family:'Poppins';font-size:44px;font-weight:800;color:var(--primary);line-height:1;margin-top:6px}
+  .result h2{font-size:18px;font-weight:900;margin:10px 0 4px}
+  .result p{color:var(--sub);font-weight:600;font-size:13px;margin-bottom:6px}
+  .misslist{text-align:left;background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:4px;margin:14px 0;max-height:260px;overflow-y:auto}
+  .misslist .r{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.5}
+  .misslist .r:last-child{border:none}
+  .misslist .r .q{font-weight:700;margin-bottom:4px}
+  .misslist .r .a{color:var(--primary);font-weight:700;font-size:12px}
+  .lvstat{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .lvstat:last-child{margin-bottom:0}
+  .lvstat .ln{font-size:10px;font-weight:800;width:50px;flex:0 0 auto}
+  .lvstat .ln.lv-easy{color:#F0B070}
+  .lvstat .ln.lv-std{color:var(--accent)}
+  .lvstat .ln.lv-hard{color:var(--danger)}
+  .lvstat .ln.lv-ibo{color:#C78BFF}
+  .lvstat .lb{flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+  .lvstat .lb i{display:block;height:100%;border-radius:99px}
+  .lvstat .lb i.lv-easy{background:#F0B070}
+  .lvstat .lb i.lv-std{background:var(--accent)}
+  .lvstat .lb i.lv-hard{background:var(--danger)}
+  .lvstat .lb i.lv-ibo{background:#C78BFF}
+  .lvstat .lnum{font-family:'Poppins';font-size:10px;font-weight:700;color:var(--sub);width:48px;text-align:right;flex:0 0 auto}
+  .lvstat .lrate{font-family:'Poppins';font-size:10px;font-weight:800;width:34px;text-align:right;flex:0 0 auto}
+  .ach-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .achb{background:var(--panel);border:1.5px solid var(--border);border-radius:12px;padding:9px 8px;opacity:.5}
+  .achb.got{opacity:1;border-color:var(--accent);background:#2A2416}
+  .achb .an{font-size:10px;font-weight:800;line-height:1.3}
+  .achb .ad{font-size:8px;color:var(--sub);font-weight:600;margin-top:3px;line-height:1.3}
+    .evr{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:11px 13px;margin-bottom:7px;opacity:.45}
+  .evr.got{opacity:1}
+  .evr.cur{border-color:var(--accent);background:#2A2416;box-shadow:0 0 0 1.5px var(--accent) inset}
+  .evr .evn{font-family:'Poppins';font-size:11px;font-weight:800;color:var(--sub);width:20px;flex:0 0 auto;text-align:right}
+  .evr .eve{font-size:22px;flex:0 0 auto}
+  .evr .evb{flex:1;min-width:0}
+  .evr .evt{font-size:13px;font-weight:800;line-height:1.35}
+  .evr .evd{font-family:'Poppins';font-size:10px;color:var(--sub);font-weight:700;margin-top:2px}
+  .evr.cur .evd{color:var(--accent)}
+  .zkr{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;opacity:.55}
+  .zkr.got{opacity:1}
+  .zke{font-size:26px;flex:0 0 auto}
+  .zkb{flex:1}
+  .zkn{font-size:13px;font-weight:900}
+  .zkd{font-size:11px;color:var(--sub);font-weight:600;line-height:1.5;margin-top:3px}
+  .zktag{font-size:8px;padding:2px 7px;border-radius:6px;font-weight:800;vertical-align:1px}
+  .zktag.N{background:#25443A;color:#8AA79A}
+  .zktag.R{background:#3A2A18;color:#F0B070}
+  .zktag.SR{background:#3A2A12;color:var(--accent)}
+  .zktag.H{background:#232C52;color:#9AA8FF}
+  .row2{display:flex;gap:10px}
+  .row2 .btn{flex:1}
+  .help{font-size:11px;color:var(--sub);line-height:1.6;margin-top:8px}
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--panel2);border:1px solid var(--border);color:var(--text);
+    padding:12px 22px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;transition:.25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .pop{position:fixed;inset:0;pointer-events:none;z-index:40}
+  .pop span{position:absolute;left:50%;top:45%;font-size:24px;animation:fly .8s ease-out forwards}
+  @keyframes fly{0%{opacity:1;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.2)}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><div class="logo">SOCIAL <span>UP!</span></div><div class="sub">中学社会 / 中1〜高校受験</div></div>
+    <div class="rankpill" id="rankPill">総合 --</div>
+  </div>
+  <div id="updBar" style="display:none;align-items:center;gap:10px;background:var(--accent);color:#1A1400;padding:10px 14px;border-radius:12px;margin:0 0 12px;font-size:13px;font-weight:700">
+    <b style="flex:1">新しいバージョンがあります</b>
+    <button onclick="forceUpdate()" style="background:#1A1400;color:var(--accent);border:0;border-radius:8px;padding:7px 12px;font-weight:800;font-size:12px">更新する</button>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="screen" id="screen"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const STORE_KEY='socialup_v1';
+const OLD_KEYS=[];
+try{ if(!localStorage.getItem(STORE_KEY)){
+  for(const k of OLD_KEYS){const o=localStorage.getItem(k); if(o){localStorage.setItem(STORE_KEY,o);break;}}
+} }catch(e){}
+let mem=null;
+const FIELDS=[
+  ['geo','地理（世界と日本）'],
+  ['his','歴史（古代〜現代）'],
+  ['civ','公民（政治・経済）']
+];
+const Q=[
+  {id:'g_e1',f:'geo',lv:'easy',q:'地球上の位置を表すとき、赤道を0度として南北を測るものはどれか。',ch:['緯度','経度','標高','時差'],a:0,ex:'赤道が緯度0度で、南北にそれぞれ90度まである。経度はイギリスの旧グリニッジ天文台を0度として東西に180度まで。'},
+  {id:'g_e2',f:'geo',lv:'easy',q:'世界の六大陸に含まれないものはどれか。',ch:['ユーラシア大陸','アフリカ大陸','南極大陸','グリーンランド'],a:3,ex:'六大陸はユーラシア・アフリカ・北アメリカ・南アメリカ・オーストラリア・南極。グリーンランドは世界最大の島。'},
+  {id:'g_e3',f:'geo',lv:'easy',q:'三大洋に含まれないものはどれか。',ch:['太平洋','大西洋','インド洋','地中海'],a:3,ex:'三大洋は太平洋・大西洋・インド洋。地中海はヨーロッパ・アジア・アフリカに囲まれた海。'},
+  {id:'g_e4',f:'geo',lv:'easy',q:'日本の標準時子午線が通る都市はどこか。',ch:['東京','大阪','明石','那覇'],a:2,ex:'兵庫県明石市を通る東経135度が日本の標準時子午線。'},
+  {id:'g_e5',f:'geo',lv:'easy',q:'経度差15度で生じる時差は何時間か。',ch:['1時間','2時間','3時間','15時間'],a:0,ex:'地球は24時間で360度回るので、360÷24＝15度で1時間。'},
+  {id:'g_e6',f:'geo',lv:'easy',q:'一年中気温が高く降水量も多い気候帯はどれか。',ch:['熱帯','乾燥帯','温帯','寒帯'],a:0,ex:'赤道付近に広がる熱帯。熱帯雨林気候とサバナ気候に分かれる。'},
+  {id:'g_e7',f:'geo',lv:'easy',q:'日本の大部分が属する気候帯はどれか。',ch:['熱帯','乾燥帯','温帯','寒帯'],a:2,ex:'日本の大部分は温帯（温暖湿潤気候）。北海道は冷帯（亜寒帯）。'},
+  {id:'g_e8',f:'geo',lv:'easy',q:'日本の国土面積はおよそどれくらいか。',ch:['約8万km2','約38万km2','約100万km2','約380万km2'],a:1,ex:'約38万km2。世界では60番台の広さで、決して小さくはない。'},
+  {id:'g_e9',f:'geo',lv:'easy',q:'日本の排他的経済水域が国土面積に比べて広い理由はどれか。',ch:['島が多く南北に長いから','人口が多いから','山が多いから','工業がさかんだから'],a:0,ex:'離島が多いため。沖ノ鳥島など小さな島も水域の維持に重要な役割を果たす。'},
+  {id:'g_e10',f:'geo',lv:'easy',q:'日本の国土のうち山地が占める割合はおよそどれくらいか',ch:['約25%','約50%','約75%','約90%'],a:2,ex:'約4分の3が山地。平野は限られ、人口や産業が集中する。'},
+  {id:'g_e11',f:'geo',lv:'easy',q:'日本アルプスに含まれない山脈はどれか。',ch:['飛驒山脈','木曽山脈','赤石山脈','奥羽山脈'],a:3,ex:'日本アルプスは飛驒・木曽・赤石の3山脈。奥羽山脈は東北地方を南北に走る。'},
+  {id:'g_e12',f:'geo',lv:'easy',q:'日本で最も長い川はどれか。',ch:['信濃川','利根川','石狩川','木曽川'],a:0,ex:'信濃川が最長（約367km）、流域面積が最大なのは利根川。'},
+  {id:'g_e13',f:'geo',lv:'easy',q:'日本の川の特徴として正しいものはどれか。',ch:['長くて流れがゆるやか','短くて流れが急','川幅が広い','水量が一定'],a:1,ex:'国土が狭く山地が海に迫るため、世界の大河と比べて短く急流。'},
+  {id:'g_e14',f:'geo',lv:'easy',q:'太平洋側の気候の特徴はどれか。',ch:['夏に雨が多く冬は乾燥','冬に雪が多い','一年中降水量が少ない','一年中冷涼'],a:0,ex:'夏の南東季節風で降水が多く、冬は山を越えた乾いた風で晴れる。'},
+  {id:'g_e15',f:'geo',lv:'easy',q:'瀬戸内の気候で降水量が少ない理由はどれか。',ch:['両側の山地が季節風をさえぎるから','標高が高いから','海流の影響','緯度が低いから'],a:0,ex:'中国山地と四国山地に挟まれ、夏冬どちらの季節風も雨を落としたあとの風が届くため。'},
+  {id:'g_e16',f:'geo',lv:'easy',q:'日本の人口ピラミッドの現在の形はどれか。',ch:['富士山型','つりがね型','つぼ型','ひょうたん型'],a:2,ex:'少子高齢化が進み、若年層が細いつぼ型。かつては富士山型だった。'},
+  {id:'g_e17',f:'geo',lv:'easy',q:'三大都市圏に含まれないものはどれか。',ch:['東京圏','名古屋圏','大阪圏','福岡圏'],a:3,ex:'三大都市圏は東京・名古屋・大阪。福岡は地方中枢都市。'},
+  {id:'g_e18',f:'geo',lv:'easy',q:'促成栽培の説明として正しいものはどれか。',ch:['出荷時期を早める','出荷時期を遅らせる','品種を増やす','農薬を減らす'],a:0,ex:'温暖な気候やビニールハウスを使い、他産地より早く出荷する。高知や宮崎が代表。'},
+  {id:'g_e19',f:'geo',lv:'easy',q:'抑制栽培が行われる代表的な地域はどれか。',ch:['高知平野','長野県の高原','沖縄','北海道の平野'],a:1,ex:'涼しい気候を利用して夏に出荷を遅らせる。長野県のレタスやキャベツが代表例。'},
+  {id:'g_e20',f:'geo',lv:'easy',q:'太平洋ベルトの説明として正しいものはどれか。',ch:['関東から九州北部に連なる工業地域','日本海側の工業地域','北海道の農業地帯','山間部の観光地'],a:0,ex:'関東南部から東海・近畿・瀬戸内・北九州へ帯状に連なる。原料の輸入と製品の輸出に有利な臨海部。'},
+  {id:'g_e21',f:'geo',lv:'easy',q:'世界で最も人口が多い国の説明として正しいものはどれか。',ch:['インドが中国を上回った','中国が最多である','アメリカが最多である','ロシアが最多である'],a:0,ex:'2023年ごろにインドの人口が中国を上回り、世界最多となった。'},
+  {id:'g_e22',f:'geo',lv:'easy',q:'EU（ヨーロッパ連合）の共通通貨はどれか。',ch:['ユーロ','ポンド','ドル','フラン'],a:0,ex:'ユーロ。ただしEU加盟国すべてが導入しているわけではない。'},
+  {id:'g_e23',f:'geo',lv:'easy',q:'アメリカ合衆国の農業の特徴を表す言葉はどれか。',ch:['適地適作','焼畑農業','二毛作','棚田'],a:0,ex:'それぞれの土地の自然条件に合った作物を大規模に栽培する。'},
+  {id:'g_e24',f:'geo',lv:'easy',q:'ASEANが属する地域はどこか。',ch:['東南アジア','南アメリカ','アフリカ','中央アジア'],a:0,ex:'東南アジア諸国連合。タイ、インドネシア、ベトナムなどが加盟。'},
+  {id:'g_s1',f:'geo',lv:'std',q:'扇状地の土地利用として多いものはどれか。',ch:['水田','果樹園','工業用地','住宅のみ'],a:1,ex:'扇状地は水はけがよいため水田に向かず、果樹園などに利用される。三角州は水田に向く。'},
+  {id:'g_s2',f:'geo',lv:'std',q:'リアス海岸の特徴として正しいものはどれか。',ch:['海岸線が複雑で入り江が深い','砂浜が続く','断崖が続く','遠浅である'],a:0,ex:'沈降した谷に海水が入ってできる。波が穏やかで養殖に適するが、津波が高くなりやすい。'},
+  {id:'g_s3',f:'geo',lv:'std',q:'日本の食料自給率（カロリーベース）はおよそどれくらいか。',ch:['約20%','約40%','約60%','約80%'],a:1,ex:'近年は約38%前後で推移し、先進国の中でも低い水準。'},
+  {id:'g_s4',f:'geo',lv:'std',q:'日本の発電で最も割合が高いものはどれか。',ch:['火力','水力','原子力','太陽光'],a:0,ex:'火力が約7割を占める。燃料の多くを輸入に頼っている点が課題。'},
+  {id:'g_s5',f:'geo',lv:'std',q:'中京工業地帯で特に生産額が大きい工業はどれか。',ch:['機械（自動車）','繊維','食品','印刷'],a:0,ex:'豊田市を中心とする自動車工業が突出しており、工業出荷額は全国最大。'},
+  {id:'g_s6',f:'geo',lv:'std',q:'日本の貿易の変化として正しいものはどれか。',ch:['加工貿易から機械類の輸出入が中心へ','原料輸出が中心へ','貿易が縮小した','農産物の輸出が中心へ'],a:0,ex:'かつては原料を輸入し製品を輸出する加工貿易だったが、現在は機械類の輸出入が双方で大きい。'},
+  {id:'g_s7',f:'geo',lv:'std',q:'過疎地域で生じる問題として適切でないものはどれか。',ch:['公共交通の維持が難しい','学校の統廃合が進む','医療機関が減る','地価が高騰する'],a:3,ex:'地価高騰は過密地域の問題。過疎では担い手不足や生活基盤の維持が課題になる。'},
+  {id:'g_s8',f:'geo',lv:'std',q:'ドーナツ化現象の説明として正しいものはどれか。',ch:['都心の人口が減り郊外が増える','郊外の人口が減る','人口が均等になる','農村へ人が移る'],a:0,ex:'地価高騰などで都心の定住人口が減り、周辺に人口が広がる。近年は都心回帰も見られる。'},
+  {id:'g_s9',f:'geo',lv:'std',q:'ハザードマップの目的はどれか。',ch:['自然災害の被害予測と避難経路の周知','観光案内','人口統計の表示','産業の分布を示す'],a:0,ex:'浸水域や土砂災害の危険区域、避難場所などを示し、事前の備えに役立てる。'},
+  {id:'g_s10',f:'geo',lv:'std',q:'地形図で等高線の間隔がせまいところはどんな地形か。',ch:['傾斜が急','傾斜がゆるやか','平地','くぼ地'],a:0,ex:'間隔がせまいほど短い水平距離で標高が変わる＝急傾斜。'},
+  {id:'g_s11',f:'geo',lv:'std',q:'2万5千分の1の地形図で4cmは実際の距離では何mか。',ch:['100m','500m','1000m','2500m'],a:2,ex:'4cm×25000＝100000cm＝1000m。'},
+  {id:'g_s12',f:'geo',lv:'std',q:'中国の経済発展を支えてきた沿岸部の政策はどれか。',ch:['経済特区','一人っ子政策','西部大開発','人民公社'],a:0,ex:'深センなどに外国企業を誘致するための特別区を設け、工業化を進めた。'},
+  {id:'g_s13',f:'geo',lv:'std',q:'OPECの説明として正しいものはどれか。',ch:['石油輸出国機構','貿易の自由化を進める組織','環境保護団体','軍事同盟'],a:0,ex:'産油国が原油の生産量や価格に影響力を持つ。中東諸国が中心。'},
+  {id:'g_s14',f:'geo',lv:'std',q:'焼畑農業が行われる地域と目的の組み合わせとして正しいものはどれか。',ch:['熱帯・灰を肥料にする','乾燥帯・水を確保する','寒帯・地面を温める','温帯・害虫を防ぐ'],a:0,ex:'森林を焼いた灰を肥料にする。数年で地力が落ちるため移動する。'},
+  {id:'g_s15',f:'geo',lv:'std',q:'アフリカ諸国に見られるモノカルチャー経済の問題点はどれか。',ch:['特定の産品の価格変動に経済が左右される','食料が余る','工業が発達しすぎる','人口が減る'],a:0,ex:'植民地時代の名残で特定の農産物や鉱産資源に依存し、国際価格の変動に弱い。'},
+  {id:'g_h1',f:'geo',lv:'hard',q:'東京が1月1日午前9時のとき、ロンドン（経度0度）の日時はどれか。',ch:['1月1日午前0時','12月31日午後9時','1月1日午後6時','12月31日午前9時'],a:0,ex:'日本は東経135度で時差9時間。東にある日本のほうが進んでいるので9時間戻して1月1日午前0時。'},
+  {id:'g_h2',f:'geo',lv:'hard',q:'日本より西にある国へ行くとき、時計はどう調整するか。',ch:['遅らせる','進める','変えない','日付だけ変える'],a:0,ex:'西へ行くほど時刻は遅れる。東へ行くときは進める。'},
+  {id:'g_h3',f:'geo',lv:'hard',q:'ある地形図で、標高100mと150mの等高線の間に4本の主曲線があった。この地形図の縮尺はどれか。',ch:['2万5千分の1','5万分の1','10万分の1','判断できない'],a:0,ex:'2万5千分の1では主曲線が10mごと。100mと150mの間に10m間隔で4本入る。5万分の1なら20mごとで2本。'},
+  {id:'g_h4',f:'geo',lv:'hard',q:'日本の輸入品目で、原油の主な輸入先として最も多い地域はどれか。',ch:['中東','東南アジア','北アメリカ','ヨーロッパ'],a:0,ex:'サウジアラビアやアラブ首長国連邦など中東に大きく依存しており、供給が不安定になるリスクがある。'},
+  {id:'g_h5',f:'geo',lv:'hard',q:'産業の空洞化が起こる主な理由はどれか。',ch:['企業が生産拠点を海外へ移すから','人口が増えるから','技術が進むから','貿易が減るから'],a:0,ex:'安い労働力を求めて工場が海外へ移り、国内の雇用や技術が失われること。'},
+  {id:'g_h6',f:'geo',lv:'hard',q:'フェアトレードの目的として正しいものはどれか。',ch:['発展途上国の生産者に正当な対価を支払う','関税をなくす','貿易額を増やす','輸入品を安くする'],a:0,ex:'不当に安く買いたたかれる状況を改め、生産者の生活と持続的な生産を支える取り組み。'},
+  {id:'g_h7',f:'geo',lv:'hard',q:'地産地消の利点として適切でないものはどれか。',ch:['輸送にともなう環境負荷が減る','生産者の顔が見える','地域経済が潤う','食料自給率が下がる'],a:3,ex:'地産地消はむしろ自給率の向上につながる。フードマイレージの削減も利点。'},
+  {id:'g_h8',f:'geo',lv:'hard',q:'日本の人口減少がもたらす影響として適切でないものはどれか。',ch:['労働力人口の減少','社会保障の負担増','国内市場の縮小','高齢化率の低下'],a:3,ex:'人口減少は高齢化率をむしろ高める。生産年齢人口が減り、支える側の負担が増す。'},
+  {id:'h_e1',f:'his',lv:'easy',q:'日本で稲作が広まった時代はどれか。',ch:['旧石器時代','縄文時代','弥生時代','古墳時代'],a:2,ex:'大陸から伝わった稲作が広まり、定住と貧富の差、やがてムラ・クニが生まれた。'},
+  {id:'h_e2',f:'his',lv:'easy',q:'縄文時代の人々の暮らしとして正しいものはどれか。',ch:['狩りや採集が中心','稲作が中心','鉄の生産が中心','都市に住んでいた'],a:0,ex:'狩猟・採集・漁が中心。土偶や貝塚が特徴。'},
+  {id:'h_e3',f:'his',lv:'easy',q:'邪馬台国の女王とされる人物はだれか。',ch:['卑弥呼','推古天皇','持統天皇','北条政子'],a:0,ex:'魏に使いを送り「親魏倭王」の称号を得たと魏志倭人伝に記される。'},
+  {id:'h_e4',f:'his',lv:'easy',q:'聖徳太子が定めた、家柄によらず能力で役人を登用する制度はどれか。',ch:['冠位十二階','十七条の憲法','班田収授法','律令'],a:0,ex:'冠位十二階。十七条の憲法は役人の心構えを示したもの。'},
+  {id:'h_e5',f:'his',lv:'easy',q:'大化の改新を中心となって進めた人物の組み合わせはどれか。',ch:['中大兄皇子と中臣鎌足','聖徳太子と蘇我馬子','桓武天皇と坂上田村麻呂','源頼朝と北条時政'],a:0,ex:'645年、蘇我氏を倒して天皇中心の政治をめざした。'},
+  {id:'h_e6',f:'his',lv:'easy',q:'奈良時代に聖武天皇が全国に建てさせたものはどれか。',ch:['国分寺と国分尼寺','城','関所','大学'],a:0,ex:'仏教の力で国を安定させようとした。都には東大寺と大仏を建立。'},
+  {id:'h_e7',f:'his',lv:'easy',q:'平安時代に藤原氏が行った政治を何というか。',ch:['摂関政治','院政','幕府政治','律令政治'],a:0,ex:'娘を天皇の后とし、その子を天皇に立てて摂政・関白として権力を握った。'},
+  {id:'h_e8',f:'his',lv:'easy',q:'源頼朝が幕府を開いた場所はどこか。',ch:['京都','鎌倉','奈良','江戸'],a:1,ex:'1192年ごろ鎌倉に幕府を開いた。武士による政権の始まり。'},
+  {id:'h_e9',f:'his',lv:'easy',q:'鎌倉幕府の将軍と御家人の関係を表す言葉はどれか。',ch:['御恩と奉公','士農工商','参勤交代','惣'],a:0,ex:'将軍が領地を保障する御恩に対し、御家人が戦で奉公する主従関係。'},
+  {id:'h_e10',f:'his',lv:'easy',q:'元寇のときの鎌倉幕府の執権はだれか。',ch:['北条時宗','北条政子','足利尊氏','平清盛'],a:0,ex:'2度にわたる元の襲来を退けたが、恩賞を十分に与えられず幕府は弱体化した。'},
+  {id:'h_e11',f:'his',lv:'easy',q:'室町幕府を開いた人物はだれか。',ch:['足利尊氏','足利義満','源頼朝','徳川家康'],a:0,ex:'足利尊氏が京都に幕府を開いた。3代義満のとき最も安定した。'},
+  {id:'h_e12',f:'his',lv:'easy',q:'応仁の乱の後に広がった、下の身分の者が上の者を倒す風潮を何というか。',ch:['下剋上','分国','惣','楽市楽座'],a:0,ex:'実力のある者が上位者を倒して力を持つ風潮。戦国時代へつながった。'},
+  {id:'h_e13',f:'his',lv:'easy',q:'織田信長が行った政策はどれか。',ch:['楽市楽座','参勤交代','刀狩','鎖国'],a:0,ex:'市場の税や座の特権を廃止して商業を活発にした。刀狩と検地は豊臣秀吉。'},
+  {id:'h_e14',f:'his',lv:'easy',q:'豊臣秀吉が行った、農民から武器を取り上げた政策はどれか。',ch:['刀狩','検地','楽市楽座','鎖国'],a:0,ex:'一揆を防ぎ、武士と農民の身分を分ける兵農分離を進めた。'},
+  {id:'h_e15',f:'his',lv:'easy',q:'江戸幕府が大名を統制するために定めた法令はどれか。',ch:['武家諸法度','御成敗式目','大宝律令','十七条の憲法'],a:0,ex:'武家諸法度。参勤交代は3代将軍徳川家光のときに制度化された。'},
+  {id:'h_e16',f:'his',lv:'easy',q:'江戸時代の身分制度で人口の大部分を占めたのはどれか。',ch:['武士','百姓','町人','公家'],a:1,ex:'人口の8割以上が百姓。年貢が幕府や藩の財政を支えた。'},
+  {id:'h_e17',f:'his',lv:'easy',q:'鎖国下で貿易が許されていた場所はどこか。',ch:['長崎の出島','横浜','神戸','博多'],a:0,ex:'オランダと中国に限り長崎で交易した。朝鮮とは対馬、琉球は薩摩を通じた。'},
+  {id:'h_e18',f:'his',lv:'easy',q:'1853年に浦賀に来航し開国を求めた人物はだれか。',ch:['ペリー','ハリス','ザビエル','マゼラン'],a:0,ex:'アメリカのペリーが来航し、翌年に日米和親条約が結ばれた。'},
+  {id:'h_e19',f:'his',lv:'easy',q:'明治政府が行った、藩を廃止して県を置いた改革はどれか。',ch:['廃藩置県','版籍奉還','地租改正','徴兵令'],a:0,ex:'中央から府知事・県令を派遣し、中央集権を確立した。'},
+  {id:'h_e20',f:'his',lv:'easy',q:'大日本帝国憲法が発布された年はどれか。',ch:['1868年','1889年','1894年','1912年'],a:1,ex:'1889年発布。ドイツ（プロイセン）の憲法を参考にし、天皇が定める欽定憲法だった。'},
+  {id:'h_e21',f:'his',lv:'easy',q:'日清戦争の講和条約はどれか。',ch:['下関条約','ポーツマス条約','日米和親条約','ベルサイユ条約'],a:0,ex:'下関条約で遼東半島や台湾を得たが、三国干渉で遼東半島は返還した。'},
+  {id:'h_e22',f:'his',lv:'easy',q:'第一次世界大戦後に設立された国際機関はどれか。',ch:['国際連盟','国際連合','EU','WTO'],a:0,ex:'ウィルソンの提唱で発足。日本は常任理事国となったが、アメリカは加盟しなかった。'},
+  {id:'h_e23',f:'his',lv:'easy',q:'1945年8月に日本が受け入れた宣言はどれか。',ch:['ポツダム宣言','大西洋憲章','カイロ宣言','独立宣言'],a:0,ex:'ポツダム宣言を受諾して降伏した。'},
+  {id:'h_e24',f:'his',lv:'easy',q:'日本国憲法が施行された年月日はどれか。',ch:['1946年11月3日','1947年5月3日','1945年8月15日','1951年9月8日'],a:1,ex:'1946年11月3日公布、1947年5月3日施行。施行日が憲法記念日。'},
+  {id:'h_s1',f:'his',lv:'std',q:'聖武天皇が大仏をつくらせた背景として正しいものはどれか。',ch:['ききんや疫病が続き社会が不安定だった','戦争に勝利したから','人口が増えたから','貿易が盛んだったから'],a:0,ex:'ききん・疫病・反乱が相次ぎ、仏教の力で国を安定させようとした（鎮護国家）。'},
+  {id:'h_s2',f:'his',lv:'std',q:'墾田永年私財法がもたらした結果はどれか。',ch:['貴族や寺社の私有地（荘園）が広がった','公地公民が強まった','農民の負担が減った','戸籍が整った'],a:0,ex:'開墾地の永久私有を認めたため、有力者が土地を集め公地公民の原則がくずれた。'},
+  {id:'h_s3',f:'his',lv:'std',q:'平清盛が行った日宋貿易の拠点はどこか。',ch:['大輪田泊（神戸）','博多','堺','長崎'],a:0,ex:'兵庫の港を整備して宋との貿易を進め、大きな富を得た。'},
+  {id:'h_s4',f:'his',lv:'std',q:'御成敗式目を定めた人物と目的の組み合わせとして正しいものはどれか。',ch:['北条泰時・武士の慣習をもとに裁判の基準を示す','源頼朝・朝廷を倒す','足利義満・貿易を進める','徳川家康・大名を統制する'],a:0,ex:'1232年、武家社会の慣習を成文化した初の武家法。'},
+  {id:'h_s5',f:'his',lv:'std',q:'勘合貿易で勘合という証明書を用いた理由はどれか。',ch:['倭寇と正式な貿易船を区別するため','税を集めるため','船の大きさを測るため','人数を数えるため'],a:0,ex:'足利義満が明と行った貿易。倭寇の取り締まりを求められたことが背景。'},
+  {id:'h_s6',f:'his',lv:'std',q:'戦国大名が定めた領国支配のための法を何というか。',ch:['分国法','御成敗式目','武家諸法度','律令'],a:0,ex:'家臣や領民を統制するために各大名が独自に定めた。喧嘩両成敗などが有名。'},
+  {id:'h_s7',f:'his',lv:'std',q:'太閤検地の意義として正しいものはどれか。',ch:['全国の土地を統一基準で測り年貢の基礎を作った','貿易を始めた','城を建てた','刀を集めた'],a:0,ex:'ものさしやますを統一し、耕作者を検地帳に記録した。これにより荘園制が終わった。'},
+  {id:'h_s8',f:'his',lv:'std',q:'江戸幕府が参勤交代を制度化した目的はどれか。',ch:['大名に費用を負担させ力を弱めるため','交通を発展させるため','人口を調べるため','農業を進めるため'],a:0,ex:'往復の費用と江戸での生活費が大名の財政を圧迫した。副産物として街道や宿場が発達した。'},
+  {id:'h_s9',f:'his',lv:'std',q:'享保の改革を行った人物はだれか。',ch:['徳川吉宗','徳川綱吉','松平定信','水野忠邦'],a:0,ex:'目安箱の設置、公事方御定書、上米の制などを行った。'},
+  {id:'h_s10',f:'his',lv:'std',q:'日米修好通商条約が不平等とされた理由はどれか。',ch:['領事裁判権を認め関税自主権がなかった','領土を割譲したから','賠償金を払ったから','軍隊が駐留したから'],a:0,ex:'外国人の犯罪を日本が裁けず、輸入品の関税を自由に決められなかった。'},
+  {id:'h_s11',f:'his',lv:'std',q:'地租改正の内容として正しいものはどれか。',ch:['地価の3%を現金で納めさせた','収穫の3%を米で納めさせた','税を廃止した','土地を国有にした'],a:0,ex:'収穫に左右されない安定した財源を得るため、現金納に改めた。農民の負担は重く一揆も起きた。'},
+  {id:'h_s12',f:'his',lv:'std',q:'自由民権運動の中心的な主張はどれか。',ch:['国会の開設と憲法の制定','鎖国の維持','幕府の復活','軍備の拡大'],a:0,ex:'板垣退助らが民撰議院設立建白書を提出し、政府に国会開設を求めた。'},
+  {id:'h_s13',f:'his',lv:'std',q:'日露戦争の講和条約で日本が得られなかったものはどれか。',ch:['賠償金','樺太南部','南満州鉄道の権益','韓国での優越権'],a:0,ex:'賠償金が得られず、増税に苦しんだ国民の不満から日比谷焼き打ち事件が起きた。'},
+  {id:'h_s14',f:'his',lv:'std',q:'大正デモクラシーを象徴する出来事はどれか。',ch:['普通選挙法の成立','徴兵令の公布','大政翼賛会の結成','治安維持法の廃止'],a:0,ex:'1925年、25歳以上の男子に選挙権が与えられた。同時に治安維持法も成立した点が重要。'},
+  {id:'h_s15',f:'his',lv:'std',q:'世界恐慌に対してアメリカが行った政策はどれか。',ch:['ニューディール政策','ブロック経済','五か年計画','鎖国'],a:0,ex:'公共事業で雇用を生み出した。イギリスやフランスはブロック経済、ソ連は五か年計画。'},
+  {id:'h_s16',f:'his',lv:'std',q:'戦後の民主化政策に含まれないものはどれか。',ch:['農地改革','財閥解体','教育基本法の制定','徴兵制の導入'],a:3,ex:'非軍事化と民主化が方針。徴兵制の導入は正反対。'},
+  {id:'h_s17',f:'his',lv:'std',q:'1951年に結ばれ、日本が独立を回復した条約はどれか。',ch:['サンフランシスコ平和条約','日米安全保障条約','日ソ共同宣言','日中平和友好条約'],a:0,ex:'翌1952年に発効し独立を回復した。同時に日米安全保障条約も結ばれた。'},
+  {id:'h_s18',f:'his',lv:'std',q:'高度経済成長期に起きた問題はどれか。',ch:['公害の深刻化','人口減少','食料の余剰','失業率の急上昇'],a:0,ex:'四大公害病が発生し、1967年に公害対策基本法が制定された。'},
+  {id:'h_h1',f:'his',lv:'hard',q:'律令制のもとで、農民が負担した税のうち特産物を納めるものはどれか。',ch:['租','調','庸','雑徭'],a:1,ex:'租は稲、調は特産物、庸は労役の代わりの布。雑徭は地方での労役。'},
+  {id:'h_h2',f:'his',lv:'hard',q:'鎌倉時代に地頭が設置された目的はどれか。',ch:['荘園の管理と年貢の徴収','外交の担当','裁判の実施','貿易の管理'],a:0,ex:'源頼朝が守護（軍事・警察）と地頭（土地管理）を置き、全国支配の基礎とした。'},
+  {id:'h_h3',f:'his',lv:'hard',q:'室町時代の惣（惣村）の説明として正しいものはどれか。',ch:['農民が自治的に運営した村の組織','武士の集まり','商人の同業組合','寺院の組織'],a:0,ex:'寄合で村のおきてを定め、年貢を請け負うこともあった。座は商工業者の同業組合。'},
+  {id:'h_h4',f:'his',lv:'hard',q:'江戸時代の三大改革の順序として正しいものはどれか。',ch:['享保→寛政→天保','寛政→享保→天保','天保→享保→寛政','享保→天保→寛政'],a:0,ex:'徳川吉宗の享保、松平定信の寛政、水野忠邦の天保の順。'},
+  {id:'h_h5',f:'his',lv:'hard',q:'開国後に日本で物価が上昇した理由として正しいものはどれか。',ch:['金が大量に海外へ流出したから','人口が急増したから','農業が衰えたから','鎖国が続いたから'],a:0,ex:'日本と海外で金銀の交換比率が違ったため金が流出し、貨幣の質を落としたことで物価が上がった。'},
+  {id:'h_h6',f:'his',lv:'hard',q:'明治政府の富国強兵を支えた殖産興業の代表的な官営工場はどれか。',ch:['富岡製糸場','八幡製鉄所','足尾銅山','三池炭鉱'],a:0,ex:'富岡製糸場は生糸の増産と技術指導のために設立された官営模範工場。八幡製鉄所は日清戦争後。'},
+  {id:'h_h7',f:'his',lv:'hard',q:'第一次世界大戦中に日本経済が好況となった理由はどれか。',ch:['ヨーロッパの生産が止まりアジア市場へ輸出が伸びた','戦争に勝ったから','資源が見つかったから','関税を下げたから'],a:0,ex:'交戦国が生産できなくなった分の需要を日本が引き受け、大戦景気となった。'},
+  {id:'h_h8',f:'his',lv:'hard',q:'五・一五事件と二・二六事件に共通することはどれか。',ch:['軍部が政治的影響力を強める契機となった','外国との戦争が始まった','憲法が改正された','政党が強くなった'],a:0,ex:'政党政治が終わり、軍部の発言力が強まった。五・一五で犬養毅首相が殺害された。'},
+  {id:'h_h9',f:'his',lv:'hard',q:'冷戦の始まりを示す出来事として適切なものはどれか。',ch:['ドイツの東西分裂','日中戦争','ベルサイユ条約','世界恐慌'],a:0,ex:'アメリカ中心の西側とソ連中心の東側の対立。ベルリンの壁が象徴。'},
+  {id:'h_h10',f:'his',lv:'hard',q:'日本が国際連合に加盟できた直接のきっかけはどれか。',ch:['日ソ共同宣言でソ連の反対がなくなった','サンフランシスコ平和条約','日米安全保障条約','日韓基本条約'],a:0,ex:'1956年の日ソ共同宣言で国交が回復し、ソ連の拒否権が外れて加盟が実現した。'},
+  {id:'c_e1',f:'civ',lv:'easy',q:'日本国憲法の三大原則に含まれないものはどれか。',ch:['国民主権','基本的人権の尊重','平和主義','三権分立'],a:3,ex:'三大原則は国民主権・基本的人権の尊重・平和主義。三権分立は統治のしくみ。'},
+  {id:'c_e2',f:'civ',lv:'easy',q:'日本国憲法で戦争放棄を定めた条文はどれか。',ch:['第1条','第9条','第25条','第96条'],a:1,ex:'第9条で戦争の放棄、戦力の不保持、交戦権の否認を定めている。'},
+  {id:'c_e3',f:'civ',lv:'easy',q:'生存権を定めた憲法第25条の内容はどれか。',ch:['健康で文化的な最低限度の生活を営む権利','裁判を受ける権利','投票する権利','職業を選ぶ権利'],a:0,ex:'社会権の中心。生活保護などの社会保障制度の根拠になっている。'},
+  {id:'c_e4',f:'civ',lv:'easy',q:'基本的人権のうち、自由権に含まれるものはどれか。',ch:['信教の自由','教育を受ける権利','選挙権','生存権'],a:0,ex:'自由権は精神・身体・経済活動の自由。教育や生存は社会権、選挙権は参政権。'},
+  {id:'c_e5',f:'civ',lv:'easy',q:'日本の国会が二院制をとる理由として正しいものはどれか。',ch:['慎重に審議し行き過ぎを防ぐため','議員を増やすため','費用を減らすため','裁判を行うため'],a:0,ex:'衆議院と参議院で二度審議することで、一方の行き過ぎを抑える。'},
+  {id:'c_e6',f:'civ',lv:'easy',q:'内閣総理大臣を指名するのはどこか。',ch:['国会','内閣','裁判所','天皇'],a:0,ex:'国会が指名し、天皇が任命する。'},
+  {id:'c_e7',f:'civ',lv:'easy',q:'法律が憲法に違反していないかを判断する権限を何というか。',ch:['違憲審査権','立法権','行政権','弾劾裁判'],a:0,ex:'裁判所が持つ。最終判断を行う最高裁判所は「憲法の番人」と呼ばれる。'},
+  {id:'c_e8',f:'civ',lv:'easy',q:'衆議院の解散を決められるのはどれか。',ch:['内閣','参議院','裁判所','天皇'],a:0,ex:'内閣が決定する。衆議院は内閣不信任決議を出せる（抑制と均衡）。'},
+  {id:'c_e9',f:'civ',lv:'easy',q:'日本の選挙権が与えられる年齢はどれか。',ch:['16歳以上','18歳以上','20歳以上','25歳以上'],a:1,ex:'2016年から18歳以上に引き下げられた。被選挙権は衆議院25歳、参議院30歳以上。'},
+  {id:'c_e10',f:'civ',lv:'easy',q:'地方公共団体の住民が持つ直接請求権に含まれないものはどれか。',ch:['条例の制定・改廃の請求','議会の解散請求','首長の解職請求','法律の制定請求'],a:3,ex:'法律を作るのは国会。地方では条例の制定改廃、解散、解職などを請求できる。'},
+  {id:'c_e11',f:'civ',lv:'easy',q:'需要量が供給量を上回っているとき、一般に価格はどうなるか。',ch:['上がる','下がる','変わらない','ゼロになる'],a:0,ex:'品不足になり価格が上がる。逆に供給が多いと価格は下がる。'},
+  {id:'c_e12',f:'civ',lv:'easy',q:'日本銀行の役割として正しくないものはどれか。',ch:['紙幣を発行する','政府の資金を扱う','銀行にお金を貸す','個人に住宅ローンを貸す'],a:3,ex:'日本銀行は「発券銀行」「政府の銀行」「銀行の銀行」。個人とは取引しない。'},
+  {id:'c_e13',f:'civ',lv:'easy',q:'税のうち、納める人と負担する人が異なるものはどれか。',ch:['直接税','間接税','関税のみ','地方税のみ'],a:1,ex:'消費税が代表例。所得税や法人税は納税者と負担者が同じ直接税。'},
+  {id:'c_e14',f:'civ',lv:'easy',q:'社会保障制度の四つの柱に含まれないものはどれか。',ch:['社会保険','公的扶助','社会福祉','公共事業'],a:3,ex:'四つの柱は社会保険・公的扶助・社会福祉・公衆衛生。'},
+  {id:'c_e15',f:'civ',lv:'easy',q:'国際連合で世界の平和と安全に主要な責任を持つ機関はどれか。',ch:['安全保障理事会','総会','国際司法裁判所','事務局'],a:0,ex:'常任理事国5か国は拒否権を持つ。'},
+  {id:'c_s1',f:'civ',lv:'std',q:'日本国憲法の改正に必要な手続きとして正しいものはどれか.',ch:['各議院の総議員の3分の2以上の賛成と国民投票での過半数','国会の過半数のみ','内閣の決定','裁判所の承認'],a:0,ex:'厳格な手続きが定められた硬性憲法。国民投票で過半数の賛成が必要。'},
+  {id:'c_s2',f:'civ',lv:'std',q:'「新しい人権」に含まれるものはどれか。',ch:['環境権やプライバシーの権利','信教の自由','財産権','裁判を受ける権利'],a:0,ex:'社会の変化にともない主張されるようになった権利。憲法に明記はないが幸福追求権などを根拠とする。'},
+  {id:'c_s3',f:'civ',lv:'std',q:'小選挙区制の特徴として正しいものはどれか。',ch:['大政党に有利で死票が多い','小政党に有利','死票が少ない','必ず連立政権になる'],a:0,ex:'1選挙区1名なので当選者以外への票が死票になりやすい。政権が安定しやすい面もある。'},
+  {id:'c_s4',f:'civ',lv:'std',q:'比例代表制の特徴として正しいものはどれか。',ch:['得票に応じて議席が配分され死票が少ない','大政党に非常に有利','1人しか当選しない','無所属に有利'],a:0,ex:'民意を反映しやすいが、小政党が分立して 政治が不安定になることもある。'},
+  {id:'c_s5',f:'civ',lv:'std',q:'三権分立において、国会が裁判所に対して持つ権限はどれか。',ch:['弾劾裁判所の設置','違憲審査','解散','内閣不信任'],a:0,ex:'ふさわしくない裁判官を辞めさせる裁判を行う。裁判所は国会の立法に違憲審査を行う。'},
+  {id:'c_s6',f:'civ',lv:'std',q:'裁判員制度の説明として正しいものはどれか。',ch:['国民が重大な刑事裁判の第一審に参加する','すべての裁判に参加する','民事裁判に参加する','裁判官の代わりを務める'],a:0,ex:'重大な刑事事件の第一審で、裁判官とともに有罪無罪と量刑を判断する。'},
+  {id:'c_s7',f:'civ',lv:'std',q:'三審制がとられている理由はどれか。',ch:['慎重な審理で誤りを防ぐため','裁判を早く終えるため','費用を減らすため','裁判官を減らすため'],a:0,ex:'原則3回まで審理を受けられる。控訴・上告により誤判を防ぐ。'},
+  {id:'c_s8',f:'civ',lv:'std',q:'株式会社における株主の責任の範囲はどれか。',ch:['出資した金額の範囲まで','会社の借金すべて','無制限','責任はない'],a:0,ex:'有限責任。倒産しても出資額を失うだけで、それ以上は負わない。'},
+  {id:'c_s9',f:'civ',lv:'std',q:'独占禁止法を運用する機関はどれか。',ch:['公正取引委員会','日本銀行','国税庁','消費者庁'],a:0,ex:'企業の独占や不当な取引制限を監視し、公正な競争を保つ。'},
+  {id:'c_s10',f:'civ',lv:'std',q:'景気が悪いときに日本銀行が行う金融政策はどれか。',ch:['国債などを買い、通貨量を増やす','国債を売る','税を上げる','公共事業を減らす'],a:0,ex:'買いオペレーションで市中の通貨量を増やし、金利を下げて投資を促す。'},
+  {id:'c_s11',f:'civ',lv:'std',q:'円高が輸出企業に不利とされる理由はどれか。',ch:['海外での価格が上がり売れにくくなるから','原材料が高くなるから','関税が上がるから','人件費が上がるから'],a:0,ex:'1ドル150円から100円になると、同じ1万円の商品が海外では約67ドルから100ドルに値上がりする。'},
+  {id:'c_s12',f:'civ',lv:'std',q:'消費税のような間接税の問題点として指摘されるものはどれか。',ch:['所得が低い人ほど負担の割合が重くなる','景気に左右されやすい','徴収が難しい','高所得者に不利'],a:0,ex:'逆進性。誰もが同率で負担するため、所得に対する割合は低所得者ほど高くなる。'},
+  {id:'c_s13',f:'civ',lv:'std',q:'クーリング・オフ制度の説明として正しいものはどれか.',ch:['一定期間内なら契約を無条件で解除できる','商品を安く買える','税を減らせる','裁判を早く行える'],a:0,ex:'訪問販売などで消費者が冷静に判断できるよう、一定期間の解約を認める制度。'},
+  {id:'c_s14',f:'civ',lv:'std',q:'少子高齢化が社会保障に与える影響として正しいものはどれか。',ch:['支える現役世代が減り一人あたりの負担が増える','給付が減って負担も減る','影響はない','保険料が不要になる'],a:0,ex:'年金や医療の受給者が増える一方、保険料を負担する現役世代が減る。'},
+  {id:'c_h1',f:'civ',lv:'hard',q:'衆議院の優越が認められている理由はどれか。',ch:['任期が短く解散もあり民意を反映しやすいから','議員数が多いから','歴史が古いから','権限が強いから'],a:0,ex:'任期4年で解散があるため、参議院より国民の意思を反映しやすいと考えられている。'},
+  {id:'c_h2',f:'civ',lv:'hard',q:'法律案について衆議院と参議院の議決が異なった場合の扱いはどれか。',ch:['衆議院で出席議員の3分の2以上の再可決で成立','自動的に成立','廃案になる','国民投票を行う'],a:0,ex:'両院協議会を開いても一致しない場合、衆議院の3分の2以上の再可決で成立する。'},
+  {id:'c_h3',f:'civ',lv:'hard',q:'内閣不信任決議が可決された場合、内閣がとるべき対応はどれか。',ch:['10日以内に衆議院を解散するか総辞職する','ただちに総辞職のみ','無視できる','参議院を解散する'],a:0,ex:'議院内閣制のしくみ。内閣は国会の信任にもとづいて成立している。'},
+  {id:'c_h4',f:'civ',lv:'hard',q:'ある商品の価格が上がったとき、一般に需要量と供給量はどうなるか。',ch:['需要量は減り供給量は増える','どちらも増える','どちらも減る','需要量は増え供給量は減る'],a:0,ex:'需要曲線は右下がり、供給曲線は右上がり。両者が一致する点が均衡価格。'},
+  {id:'c_h5',f:'civ',lv:'hard',q:'1ドル100円から1ドル120円になった。この変化の説明として正しいものはどれか。',ch:['円安が進み輸出に有利になる','円高が進み輸入に有利になる','円高で輸出に有利','変化はない'],a:0,ex:'同じ1ドルを得るのに多くの円が必要＝円の価値が下がった＝円安。輸出に有利、輸入に不利。'},
+  {id:'c_h6',f:'civ',lv:'hard',q:'累進課税制度の目的として正しいものはどれか。',ch:['所得の再分配によって格差を縮める','税収を安定させる','徴税を簡単にする','消費を増やす'],a:0,ex:'所得が高いほど税率が上がる。所得税が代表例で、格差の是正をねらう。'},
+  {id:'c_h7',f:'civ',lv:'hard',q:'財政政策として、不景気のときに政府が行う対応はどれか。',ch:['公共事業を増やし減税する','公共事業を減らし増税する','金利を上げる','通貨を減らす'],a:0,ex:'需要を生み出して景気を刺激する。金利や通貨量の操作は日本銀行の金融政策。'},
+  {id:'c_h8',f:'civ',lv:'hard',q:'国際連合の安全保障理事会で決議が成立しないことがある理由はどれか。',ch:['常任理事国が拒否権を持つから','総会の承認が必要だから','加盟国が多いから','予算がないから'],a:0,ex:'アメリカ・イギリス・フランス・ロシア・中国のうち1か国でも反対すると決議できない。'},
+  {id:'c_h9',f:'civ',lv:'hard',q:'地球温暖化対策として2015年に採択された枠組みはどれか。',ch:['パリ協定','京都議定書','ラムサール条約','ワシントン条約'],a:0,ex:'すべての参加国が削減目標を定める。京都議定書は1997年で先進国のみに義務があった。'},
+  {id:'c_h10',f:'civ',lv:'hard',q:'SDGsの説明として正しいものはどれか.',ch:['2030年までに達成をめざす持続可能な開発目標','先進国だけの目標','経済成長のみの目標','軍縮のための条約'],a:0,ex:'17の目標からなり、貧困・教育・環境・平等など幅広い課題を扱う。'},
+  {id:'c_e16',f:'civ',lv:'easy',q:'日本国憲法において天皇はどのような地位とされているか。',ch:['日本国および日本国民統合の象徴','国の元首で統治権を持つ','内閣の一員','国会の議長'],a:0,ex:'象徴天皇制。国政に関する権能を持たず、内閣の助言と承認により国事行為を行う。'},
+  {id:'c_e17',f:'civ',lv:'easy',q:'国民の三大義務に含まれないものはどれか。',ch:['勤労の義務','納税の義務','子どもに教育を受けさせる義務','投票の義務'],a:3,ex:'三大義務は勤労・納税・教育を受けさせること。投票は権利であり義務ではない。'},
+  {id:'c_e18',f:'civ',lv:'easy',q:'平等権にもとづく考え方として正しいものはどれか。',ch:['人種や性別で差別されない','好きな職業を選べる','裁判を受けられる','最低限度の生活を営める'],a:0,ex:'法の下の平等。職業選択は自由権、生存権は社会権。'},
+  {id:'c_e19',f:'civ',lv:'easy',q:'国会の主な仕事として正しいものはどれか。',ch:['法律をつくる','法律を執行する','裁判を行う','条例をつくる'],a:0,ex:'国会は唯一の立法機関。執行は内閣、裁判は裁判所、条例は地方議会。'},
+  {id:'c_e20',f:'civ',lv:'easy',q:'内閣の主な仕事に含まれないものはどれか。',ch:['予算の議決','外交関係の処理','条約の締結','政令の制定'],a:0,ex:'予算を作るのは内閣だが、議決するのは国会。'},
+  {id:'c_e21',f:'civ',lv:'easy',q:'地方公共団体の議会が定める決まりを何というか。',ch:['条例','法律','政令','省令'],a:0,ex:'その地域だけに適用される。法律の範囲内で定められる。'},
+  {id:'c_e22',f:'civ',lv:'easy',q:'地方自治が「民主主義の学校」と呼ばれる理由はどれか。',ch:['住民が身近な問題で政治に参加できるから','税が安いから','議員が少ないから','歴史が古いから'],a:0,ex:'イギリスのブライスの言葉。身近な問題を通じて民主主義を学べるという意味。'},
+  {id:'c_e23',f:'civ',lv:'easy',q:'家計・企業・政府のうち、生産の中心となるのはどれか。',ch:['家計','企業','政府','どれでもない'],a:1,ex:'企業が生産、家計が消費と労働力の提供、政府が公共サービスを担う。'},
+  {id:'c_e24',f:'civ',lv:'easy',q:'製造物責任法（PL法）の内容として正しいものはどれか.',ch:['欠陥商品で被害を受けたとき企業に賠償を求められる','商品を安く買える','契約を解除できる','税が軽くなる'],a:0,ex:'企業の過失を証明しなくても、製品の欠陥を示せば賠償を求められる。'},
+  {id:'c_e25',f:'civ',lv:'easy',q:'労働三権に含まれないものはどれか。',ch:['団結権','団体交渉権','団体行動権','経営参加権'],a:3,ex:'労働三権は団結権・団体交渉権・団体行動権（争議権）。'},
+  {id:'c_e26',f:'civ',lv:'easy',q:'公共料金が国や地方の認可を必要とする理由はどれか。',ch:['国民生活への影響が大きいから','企業が少ないから','税金だから','海外との取引だから'],a:0,ex:'電気・ガス・水道・鉄道など、生活に不可欠で競争が働きにくいため。'},
+  {id:'c_e27',f:'civ',lv:'easy',q:'国の歳出のうち最も大きな割合を占めるものはどれか。',ch:['社会保障関係費','防衛関係費','公共事業費','文教費'],a:0,ex:'高齢化により年金・医療・介護の費用が増え続けている。'},
+  {id:'c_e28',f:'civ',lv:'easy',q:'国際連合の本部が置かれている都市はどこか。',ch:['ニューヨーク','ジュネーブ','パリ','ロンドン'],a:0,ex:'ニューヨーク。専門機関の多くはジュネーブなどにある。'},
+  {id:'g_e25',f:'geo',lv:'easy',q:'季節風（モンスーン）の風向として正しいものはどれか。',ch:['夏は海から陸、冬は陸から海','一年中同じ向き','夏は陸から海','向きは決まっていない'],a:0,ex:'夏は南東から湿った風、冬は北西から乾いた風が吹く。日本の気候の特徴を作る。'},
+  {id:'g_e26',f:'geo',lv:'easy',q:'ヒートアイランド現象の説明として正しいものはどれか。',ch:['都市部の気温が周辺より高くなる','海の温度が上がる','山の気温が上がる','気温差がなくなる'],a:0,ex:'アスファルトやビル、排熱が原因。緑地や風の通り道の確保が対策になる。'},
+  {id:'g_e27',f:'geo',lv:'easy',q:'日本の領土をめぐる問題で、ロシアが占拠している地域はどれか。',ch:['北方領土','竹島','尖閣諸島','沖ノ鳥島'],a:0,ex:'択捉島・国後島・色丹島・歯舞群島。竹島は韓国が占拠、尖閣諸島は日本が有効支配している。'},
+  {id:'g_s16',f:'geo',lv:'std',q:'日本の農業が抱える課題として適切でないものはどれか。',ch:['農業従事者の高齢化','耕作放棄地の増加','後継者の不足','若者の急増'],a:3,ex:'担い手の高齢化と後継者不足が深刻。耕作放棄地も増えている。'},
+  {id:'g_s17',f:'geo',lv:'std',q:'日本の水産業で「育てる漁業」にあたるものはどれか。',ch:['養殖業と栽培漁業','遠洋漁業','沖合漁業','沿岸漁業'],a:0,ex:'養殖は出荷まで育て、栽培漁業は稚魚を放流して自然の中で育てる。'},
+  {id:'g_s18',f:'geo',lv:'std',q:'再生可能エネルギーに含まれないものはどれか。',ch:['太陽光','風力','地熱','天然ガス'],a:3,ex:'天然ガスは化石燃料。日本は火山国で地熱の潜在力が大きいとされる。'},
+  {id:'g_h9',f:'geo',lv:'hard',q:'日本の輸入品の内訳が、かつての原料中心から機械類の比重が高まった理由はどれか。',ch:['海外に移した工場から製品を輸入するようになったから','資源が増えたから','人口が減ったから','関税が上がったから'],a:0,ex:'企業の海外進出により、現地で生産した製品を日本へ輸入する構造に変わった。'},
+  {id:'h_e25',f:'his',lv:'easy',q:'弥生時代に大陸から伝わった金属器の組み合わせはどれか。',ch:['青銅器と鉄器','金と銀','ガラスと陶器','石器と土器'],a:0,ex:'青銅器は祭りの道具、鉄器は農具や武器として使われた。'},
+  {id:'h_e26',f:'his',lv:'easy',q:'奈良時代に編さんされた、現存する日本最古の歌集はどれか。',ch:['万葉集','古今和歌集','源氏物語','枕草子'],a:0,ex:'天皇から農民まで幅広い層の歌を収める。防人の歌も含まれる。'},
+  {id:'h_e27',f:'his',lv:'easy',q:'平安時代に生まれた、日本独自の文化を何というか。',ch:['国風文化','天平文化','元禄文化','化政文化'],a:0,ex:'遣唐使の停止後に発達。かな文字が生まれ、源氏物語や枕草子が書かれた。'},
+  {id:'h_e28',f:'his',lv:'easy',q:'安土桃山時代に千利休が大成したものはどれか。',ch:['茶の湯（わび茶）','能','歌舞伎','浮世絵'],a:0,ex:'質素さの中に美を見出すわび茶を確立した。'},
+  {id:'h_e29',f:'his',lv:'easy',q:'江戸時代の元禄文化が栄えた地域と担い手の組み合わせはどれか。',ch:['上方の町人','江戸の武士','京都の公家','地方の農民'],a:0,ex:'大阪・京都の町人が担い手。井原西鶴、松尾芭蕉、近松門左衛門が代表。'},
+  {id:'h_s19',f:'his',lv:'std',q:'鎌倉新仏教が広まった理由として正しいものはどれか。',ch:['分かりやすく実践しやすかったから','国が強制したから','貴族が広めたから','外国から来たから'],a:0,ex:'念仏や題目を唱えるなど簡明な教えで、武士や庶民に受け入れられた。'},
+  {id:'h_s20',f:'his',lv:'std',q:'安土桃山時代の南蛮貿易で日本にもたらされたものはどれか。',ch:['鉄砲やキリスト教','茶','漢字','仏教'],a:0,ex:'ポルトガル人やスペイン人との貿易。鉄砲は戦い方を、キリスト教は文化を変えた。'},
+  {id:'h_s21',f:'his',lv:'std',q:'明治時代の文明開化を象徴するものとして適切でないものはどれか.',ch:['太陽暦の採用','洋服やランプの普及','鉄道の開通','刀を差す習慣の奨励'],a:3,ex:'廃刀令により刀を差す習慣は廃止された。'},
+  {id:'h_h11',f:'his',lv:'hard',q:'班田収授法が行われなくなった理由として正しいものはどれか。',ch:['人口増加と逃亡で口分田が不足したから','戦争が起きたから','天皇が廃止したから','農業が発達したから'],a:0,ex:'与える田が足りなくなり、墾田永年私財法によって私有地が広がった。'},
+  {id:'h_h12',f:'his',lv:'hard',q:'江戸幕府が鎖国を行った主な目的はどれか。',ch:['キリスト教の禁止と貿易の独占','外国と戦うため','人口を増やすため','農業を進めるため'],a:0,ex:'キリスト教の広がりが幕府の支配をおびやかすと考え、貿易の利益も独占した。'},
+  {id:'c_s15',f:'civ',lv:'std',q:'間接民主制（議会制民主主義）が採用される理由はどれか。',ch:['全員が直接集まって決めるのは現実的でないから','専門家だけで決めるため','費用がかからないため','憲法で禁止されているため'],a:0,ex:'代表者を選んで決定を委ねる。地方の住民投票などで直接民主制の要素も取り入れられている。'},
+  {id:'c_s16',f:'civ',lv:'std',q:'情報公開制度の目的として正しいものはどれか.',ch:['国民が行政を監視し判断できるようにするため','秘密を守るため','税を集めるため','裁判を行うため'],a:0,ex:'知る権利を実質的に保障する。行政の透明性を高める。'},
+  {id:'c_s17',f:'civ',lv:'std',q:'ワーク・ライフ・バランスの考え方として正しいものはどれか。',ch:['仕事と生活の両立を図る','仕事を最優先する','働かないことを勧める','賃金を上げる'],a:0,ex:'長時間労働の是正や育児・介護との両立を進める考え方。'},
+  {id:'c_s18',f:'civ',lv:'std',q:'企業の社会的責任（CSR）に含まれるものはどれか。',ch:['環境への配慮や地域貢献','利益の最大化のみ','株価を上げること','納税だけ'],a:0,ex:'利益追求だけでなく、環境・人権・地域への責任を果たすことが求められる。'}
+];
+const LV={easy:{n:'基礎',d:'中1〜中2'},std:{n:'標準',d:'中3'},hard:{n:'入試',d:'高校受験'}};
+const FICON={geo:'🗺',his:'🏯',civ:'⚖️'};
+
+function load(){
+  try{const raw=localStorage.getItem(STORE_KEY);if(raw)return JSON.parse(raw);
+    const init={stats:{},best:{}};localStorage.setItem(STORE_KEY,JSON.stringify(init));return init;
+  }catch(e){if(!mem)mem={stats:{},best:{}};return mem;}
+}
+function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){mem=state;}}
+let state=load();
+if(!state.stats)state.stats={};
+if(!state.best)state.best={};
+if(state.xp==null)state.xp=0;
+if(state.maxCombo==null)state.maxCombo=0;
+if(!state.ach)state.ach=[];
+if(!state.streak)state.streak={day:'',count:0};
+if(state.taBest==null)state.taBest=0;
+if(!state.stat)state.stat={day:'',dayQ:0,fields:[],peakWeak:0};
+function bumpQ(){
+  const t=todayStr();
+  if(state.stat.day!==t){state.stat.day=t;state.stat.dayQ=0;}
+  state.stat.dayQ++;
+  const h=new Date().getHours();
+  if(h<5)unlock('nightowl'); else if(h<8)unlock('earlybird');
+  if(state.stat.dayQ>=50)unlock('marathon');
+  save();
+}
+if(!state.cards)state.cards=[];
+
+const EVO=[
+ {n:'地図を開く人',e:'🗺'},{n:'方角を知る人',e:'🧭'},{n:'土地を読む人',e:'⛰'},
+ {n:'気候を知る人',e:'🌦'},{n:'人の暮らしを見る人',e:'🏘'},{n:'産業を知る人',e:'🏭'},
+ {n:'世界をめぐる人',e:'🌏'},{n:'昔をたずねる人',e:'🏺'},{n:'武士の世を知る人',e:'⚔️'},
+ {n:'天下を見わたす人',e:'🏯'},{n:'開国を見とどける人',e:'⛵'},{n:'近代を歩く人',e:'🚂'},
+ {n:'戦後をたどる人',e:'🕊'},{n:'憲法を読む人',e:'📜'},{n:'政治を考える人',e:'⚖️'},
+ {n:'経済を読む人',e:'💹'},{n:'税と福祉を知る人',e:'🤝'},{n:'国際社会を見る人',e:'🌐'},
+ {n:'課題に向き合う人',e:'💭'},{n:'社会をつくる人',e:'🏛'},
+];
+function evoTitle(l){return EVO[Math.min(l,EVO.length)-1];}
+
+const CARDS=[
+ {id:'sekidou',r:'N',e:'🌏',n:'赤道の長さ',d:'赤道一周は約4万km。フランス革命期に「北極から赤道までの距離の1000万分の1」を1メートルと定めたため、ちょうど4万kmに近い値になっている'},
+ {id:'nihon_hashi',r:'N',e:'🌉',n:'日本橋',d:'江戸時代に五街道の起点とされ、いまも日本の道路の距離はここを基準に測られている'},
+ {id:'meridian',r:'N',e:'🕐',n:'標準時子午線',d:'兵庫県明石市を通る東経135度。135は15の倍数で、世界標準時とちょうど9時間差になる'},
+ {id:'fossa',r:'N',e:'🗾',n:'フォッサマグナ',d:'本州の中央部を南北に走る巨大な溝。東北日本と西南日本の境目で、地質がまったく異なる'},
+ {id:'ricefield',r:'N',e:'🌾',n:'棚田',d:'斜面に階段状につくられた水田。土砂崩れを防ぎ水をたくわえる役割もあり、日本の原風景として保全されている'},
+ {id:'kanji',r:'N',e:'✍️',n:'漢字の伝来',d:'漢字は中国から伝わり、日本語の音を表すために万葉仮名として使われた。そこから平仮名と片仮名が生まれた'},
+ {id:'shosoin',r:'N',e:'🏛',n:'正倉院',d:'奈良の東大寺にある倉。シルクロードを通じて伝わったペルシャ由来の宝物も納められており、当時の国際性を示す'},
+ {id:'kana',r:'N',e:'📝',n:'かな文字',d:'平安時代に漢字をくずして生まれた。公式文書は漢文だったため、かな文学の担い手は女性が中心となった'},
+ {id:'genpei',r:'N',e:'🏹',n:'源平の色',d:'源氏が白旗、平氏が赤旗を用いた。紅白に分かれて競う日本の習慣の由来のひとつとされる'},
+ {id:'sankin',r:'N',e:'🚶',n:'参勤交代の副産物',d:'大名行列のために街道や宿場が整い、全国に人と物と情報が行き交うようになった。統制策が経済を発展させた'},
+ {id:'edo_pop',r:'N',e:'🏙',n:'江戸の人口',d:'18世紀の江戸は人口100万人を超え、当時世界最大級の都市だった。上下水道も整備されていた'},
+ {id:'terakoya',r:'N',e:'📚',n:'寺子屋',d:'江戸時代の庶民の教育機関。日本の識字率は当時の世界でもかなり高く、明治以降の近代化を支えた'},
+ {id:'yenname',r:'N',e:'💴',n:'「円」の由来',d:'明治政府が定めた通貨単位。丸い形に由来するという説が有力で、中国の「元」、韓国の「ウォン」も同じ語源とされる'},
+ {id:'tokaido',r:'N',e:'🚄',n:'東海道新幹線',d:'1964年の東京オリンピックに合わせて開業。世界初の高速鉄道として各国の鉄道に影響を与えた'},
+ {id:'kenpou_day',r:'N',e:'📜',n:'憲法記念日',d:'日本国憲法は1946年11月3日に公布され、半年後の1947年5月3日に施行された。施行日が憲法記念日になっている'},
+ {id:'ballot',r:'N',e:'🗳',n:'18歳選挙権',d:'2016年から選挙権が18歳以上になった。世界では18歳が最も一般的で、日本は長く20歳だった'},
+ {id:'greenwich',r:'R',e:'🔭',n:'グリニッジが基準の理由',d:'1884年の国際会議で決まった。当時イギリスの海図が広く使われており、多数決で経度0度に選ばれた'},
+ {id:'dateline',r:'R',e:'📅',n:'日付変更線',d:'まっすぐではなく折れ曲がっている。同じ国や島々で日付が分かれないように調整されているため'},
+ {id:'sahara',r:'R',e:'🏜',n:'サハラ砂漠の緑',d:'約6000年前のサハラは草原で、湖もあり人が暮らしていた。岩絵にはキリンやカバが描かれている'},
+ {id:'polder',r:'R',e:'🌊',n:'オランダの干拓地',d:'国土の約4分の1が海面より低い。「世界は神がつくったが、オランダはオランダ人がつくった」という言葉がある'},
+ {id:'kofun',r:'R',e:'⛰',n:'仁徳天皇陵古墳',d:'墳丘の長さ約486mで、面積では世界最大級の墓。クフ王のピラミッド、秦の始皇帝陵と並び称される'},
+ {id:'wa',r:'R',e:'🥇',n:'金印',d:'志賀島で発見された「漢委奴国王」の金印。中国の歴史書の記述を裏づける実物として、日本古代史の重要な証拠になっている'},
+ {id:'mongol',r:'R',e:'🌀',n:'元寇と「神風」',d:'暴風雨で元軍が撤退したとされるが、実際には防塁の構築や御家人の奮戦も大きかったと考えられている'},
+ {id:'teppo',r:'R',e:'🔫',n:'鉄砲の国産化',d:'1543年に種子島へ伝わった鉄砲を、日本はわずか数十年で世界有数の生産国になるまで量産した'},
+ {id:'sakoku_word',r:'R',e:'🚪',n:'「鎖国」という言葉',d:'江戸時代には使われておらず、19世紀にオランダ語の書物を訳す際に作られた言葉。実際には4つの窓口で交流が続いていた'},
+ {id:'kurofune',r:'R',e:'⛵',n:'黒船の「黒」',d:'船体に塗られた防腐用のタールで黒く見えたことに由来する。蒸気船の煙も人々を驚かせた'},
+ {id:'meiji_cal',r:'R',e:'🗓',n:'暦が変わった日',d:'明治5年12月2日の翌日が明治6年1月1日になった。太陽暦への切り替えで、明治5年12月は2日しかない'},
+ {id:'ryoma',r:'R',e:'🤝',n:'薩長同盟',d:'犬猿の仲だった薩摩と長州を結びつけた同盟。倒幕の流れを決定づけた'},
+ {id:'ww1_boom',r:'SR',e:'📈',n:'成金',d:'第一次世界大戦の好景気で急に富を得た人々。暗い場所で百円札を燃やして明かりにしたという風刺画が残る'},
+ {id:'universal',r:'SR',e:'✊',n:'普通選挙法と治安維持法',d:'1925年、選挙権を広げる法律と、思想を取り締まる法律が同じ年に成立した。自由の拡大と統制が同時に進んだ'},
+ {id:'nine',r:'SR',e:'🕊',n:'憲法第9条',d:'戦争放棄を定める条文。同様の規定を持つ憲法は他国にもあるが、戦力不保持まで踏み込んだ例は少ない'},
+ {id:'olympic64',r:'SR',e:'🏅',n:'1964年の東京',d:'新幹線・高速道路・カラーテレビが一気に整備された。高度経済成長を象徴する出来事となった'},
+ {id:'minamata',r:'SR',e:'💧',n:'公害と法律',d:'四大公害病の裁判で被害者が勝訴し、1971年に環境庁（現在の環境省）が設置された。市民の訴えが制度を変えた例'},
+ {id:'yen_shock',r:'SR',e:'💱',n:'1ドル360円の時代',d:'戦後は固定相場で1ドル360円だった。1973年に変動相場制へ移行し、現在は日々変動している'},
+ {id:'nazca',r:'H',e:'🛩',n:'ナスカの地上絵',d:'ペルーの乾燥地帯に描かれた巨大な絵。雨がほとんど降らず風も弱い環境だからこそ2000年以上残った'},
+ {id:'timezone',r:'H',e:'⏰',n:'45分ずれる国',d:'ネパールの標準時は世界標準時から5時間45分ずれている。時差が15分単位の国はほかにインドやイランなどがある'},
+ {id:'jomon_teeth',r:'H',e:'🦷',n:'縄文人の抜歯',d:'成人の儀式として特定の歯を抜く風習があった。抜く歯の組み合わせが集団ごとに違い、社会の区分を示すと考えられている'},
+ {id:'edo_recycle',r:'H',e:'♻️',n:'江戸のリサイクル',d:'紙くず買い、灰買い、鍋の修理屋など、あらゆるものを再利用する商売が成立していた。徹底した循環型社会だった'},
+ {id:'shoin',r:'H',e:'🏠',n:'和室の起源',d:'畳・床の間・襖からなる書院造は室町時代に成立した。現代の和室の原型がこの時期にできている'},
+ {id:'okinawa_time',r:'H',e:'🌺',n:'返還と車線',d:'1972年に沖縄が返還されたあとも車は右側通行のままで、1978年に一夜で左側通行へ切り替えられた'},
+];
+function grantCard(){
+  const have=new Set(state.cards||[]);
+  const hid=CARDS.filter(c=>c.r==='H'&&!have.has(c.id));
+  if(hid.length&&Math.random()<0.04){
+    const pick=hid[Math.floor(Math.random()*hid.length)];
+    state.cards.push(pick.id);save();
+    setTimeout(()=>{toast('🔮 隠し図鑑を発見！ '+pick.e+' '+pick.n);pop(20);},1400);
+    return;
+  }
+  const pool=CARDS.filter(c=>c.r!=='H'&&!have.has(c.id));
+  if(!pool.length)return;
+  const W={N:6,R:3,SR:1};
+  let tot=0;pool.forEach(c=>tot+=W[c.r]);
+  let x=Math.random()*tot,pick=pool[0];
+  for(const c of pool){x-=W[c.r];if(x<=0){pick=c;break;}}
+  state.cards.push(pick.id);save();
+  setTimeout(()=>{toast('📖 図鑑に追加: '+pick.e+' '+pick.n+(pick.r==='SR'?'（超レア！）':pick.r==='R'?'（レア）':''));pop(pick.r==='SR'?20:10);},1400);
+}
+function cardsNormal(){return CARDS.filter(c=>c.r!=='H');}
+let curLv='all';
+
+const XPLV={easy:8,std:10,hard:14};
+const ACH=[
+ {id:'first',name:'はじめの一歩',desc:'クイズを1回クリア'},
+ {id:'combo5',name:'連勝',desc:'5コンボ達成'},
+ {id:'combo10',name:'快進撃',desc:'10コンボ達成'},
+ {id:'combo20',name:'圧勝',desc:'20コンボ達成'},
+ {id:'perfect',name:'完全解答',desc:'10問クイズで全問正解'},
+ {id:'solve50',name:'見習い',desc:'50問に挑戦'},
+ {id:'solve100',name:'探究者',desc:'100問に挑戦'},
+ {id:'solveall',name:'全問制覇',desc:'すべての問題に挑戦'},
+ {id:'geo50',name:'地理の使い手',desc:'地理で50問正解'},
+ {id:'his50',name:'歴史の使い手',desc:'歴史で50問正解'},
+ {id:'civ50',name:'公民の使い手',desc:'公民で50問正解'},
+ {id:'hard50',name:'入試レベル攻略',desc:'入試レベルで50問正解'},
+ {id:'ta15',name:'早わざ',desc:'タイムアタック15問'},
+ {id:'ta20',name:'神速',desc:'タイムアタック20問'},
+ {id:'streak3',name:'3日連続',desc:'3日連続で学習'},
+ {id:'streak7',name:'週間パーフェクト',desc:'7日連続で学習'},
+ {id:'streak14',name:'継続は力',desc:'14日連続で学習'},
+ {id:'streak30',name:'不動',desc:'30日連続で学習'},
+ {id:'lv5',name:'Lv.5 到達',desc:'レベル5に到達'},
+ {id:'lv10',name:'Lv.10 到達',desc:'レベル10に到達'},
+ {id:'lv20',name:'Lv.20 到達',desc:'最高レベルに到達'},
+ {id:'cards10',name:'収集家',desc:'図鑑を10種あつめる'},
+ {id:'cards34',name:'資料館長',desc:'図鑑をコンプリート'},
+];
+const ACH_SECRET=[
+ {id:'nightowl',name:'夜行性',desc:'深夜0時〜4時に学習した'},
+ {id:'earlybird',name:'朝型',desc:'早朝5時〜7時に学習した'},
+ {id:'marathon',name:'持久力',desc:'1日に50問回答した'},
+ {id:'allfield',name:'三分野制覇',desc:'3分野すべてで学習した'},
+ {id:'comeback',name:'巻き返し',desc:'苦手を10問ためてから0にした'},
+ {id:'secret',name:'発見',desc:'隠し図鑑を手に入れた'},
+];
+function achAll(){return ACH.concat(ACH_SECRET);}
+function isSecret(id){return ACH_SECRET.some(a=>a.id===id);}
+
+const MAXLV=20;
+function xpNeed(l){return 40*l+2*l*l;}
+function lvlInfo(xp){
+  let l=1,acc=0,need=xpNeed(1);
+  while(l<MAXLV&&xp>=acc+need){acc+=need;l++;need=xpNeed(l);}
+  if(l>=MAXLV)return{level:MAXLV,cur:Math.max(0,xp-acc),need:xpNeed(MAXLV),max:true};
+  return{level:l,cur:xp-acc,need};
+}
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function touchStreak(){
+  const t=todayStr();if(state.streak.day===t)return;
+  const y=new Date(Date.now()-864e5);
+  const ys=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');
+  state.streak.count=(state.streak.day===ys)?state.streak.count+1:1;
+  state.streak.day=t;save();
+  if(state.streak.count%7===0){toast('🔥 '+state.streak.count+'日連続達成！');grantCard();}
+  else if(state.streak.count>=2)toast('🔥 '+state.streak.count+'日連続！');
+  checkAch();
+}
+function addXp(n){
+  const before=lvlInfo(state.xp).level;
+  state.xp+=n;const after=lvlInfo(state.xp).level;save();
+  if(after>before){
+    pop(20);setTimeout(()=>toast('🎉 Lv.'+after+'！「'+evoTitle(after).n+'」に到達！'),350);
+    if(after%2===0)grantCard();   // 偶数レベルのみ
+  }
+  checkAch();
+}
+function unlock(id){
+  if(state.ach.includes(id))return;
+  state.ach.push(id);save();
+  const a=achAll().find(x=>x.id===id);
+  setTimeout(()=>toast((isSecret(id)?'🕵️ 隠し実績を発見: ':'🏅 実績解除: ')+(a?a.name:id)),700);
+  grantCard();
+}
+function iboCorrect(){let n=0;Q.forEach(q=>{if(q.lv==='ibo'&&state.stats[q.id])n+=state.stats[q.id].c;});return n;}
+function fieldCorrect(f){let n=0;Q.forEach(q=>{if(q.f===f&&state.stats[q.id])n+=state.stats[q.id].c;});return n;}
+function lvCorrect(lv){let n=0;Q.forEach(q=>{if(q.lv===lv&&state.stats[q.id])n+=state.stats[q.id].c;});return n;}
+function totalCorrect(){let n=0;Object.keys(state.stats).forEach(k=>n+=state.stats[k].c);return n;}
+function checkCardMilestone(){
+  if(!state.cardMile)state.cardMile=0;
+  const marks=[25,60,110,170,240,320,410,510,620,740];
+  let due=0; marks.forEach(m=>{if(totalCorrect()>=m)due++;});
+  while(state.cardMile<due){state.cardMile++;grantCard();}
+  save();
+}
+function checkAch(){
+  const solved=Object.keys(state.stats).length;
+  const lv=lvlInfo(state.xp).level;
+  if(state.maxCombo>=5)unlock('combo5');
+  if(state.maxCombo>=10)unlock('combo10');
+  if(state.maxCombo>=20)unlock('combo20');
+  if(solved>=50)unlock('solve50');
+  if(solved>=100)unlock('solve100');
+  if(solved>=Q.length)unlock('solveall');
+  [['geo','geo50'],['his','his50'],['civ','civ50']]
+    .forEach(([f,id])=>{if(fieldCorrect(f)>=50)unlock(id);});
+  if(lvCorrect('hard')>=50)unlock('hard50');
+  if(state.taBest>=15)unlock('ta15');
+  if(state.taBest>=20)unlock('ta20');
+  [[3,'streak3'],[7,'streak7'],[14,'streak14'],[30,'streak30']]
+    .forEach(([n,id])=>{if(state.streak.count>=n)unlock(id);});
+  [[5,'lv5'],[10,'lv10'],[20,'lv20']].forEach(([n,id])=>{if(lv>=n)unlock(id);});
+  const cn=cardsNormal().filter(c=>state.cards.includes(c.id)).length;
+  if(cn>=10)unlock('cards10');
+  if(cn>=cardsNormal().length)unlock('cards34');
+  if(CARDS.some(c=>c.r==='H'&&state.cards.includes(c.id)))unlock('secret');
+  if(!state.stat.fields)state.stat.fields=[];
+  if(state.stat.fields.length>=3)unlock('allfield');
+  const wk=weak().length;
+  if(wk>state.stat.peakWeak)state.stat.peakWeak=wk;
+  if(state.stat.peakWeak>=10&&wk===0)unlock('comeback');
+}
+
+const $=id=>document.getElementById(id);
+const screen=$('screen');
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1700)}
+function pop(n){const p=document.createElement('div');p.className='pop';const e=['⭐','✨','🎉','💫','🧬'];
+  for(let i=0;i<(n||8);i++){const s=document.createElement('span');s.textContent=e[i%5];
+    s.style.setProperty('--dx',(Math.random()*260-130)+'px');s.style.setProperty('--dy',(-Math.random()*200-40)+'px');p.appendChild(s)}
+  document.body.appendChild(p);setTimeout(()=>p.remove(),820)}
+function fieldName(f){const o=FIELDS.find(x=>x[0]===f);return o?o[1]:f}
+function pool(field,lv){return Q.filter(q=>(field==='all'||q.f===field)&&(lv==='all'||q.lv===lv))}
+function weak(){return Q.filter(q=>{const s=state.stats[q.id];return s&&s.w>0&&s.c<=s.w})}
+function rankOf(p){return p>=95?'S':p>=85?'A':p>=70?'B':p>=50?'C':'D'}
+
+const APP_VER='20260830a';
+function forceUpdate(){ location.replace(location.origin+location.pathname+'?v='+Date.now()); }
+async function checkUpdate(silent){
+  try{
+    const r=await fetch(location.origin+location.pathname+'?c='+Date.now(),{cache:'no-store'});
+    const t=await r.text();
+    const m=t.match(/const APP_VER='([^']+)'/);
+    if(m&&m[1]!==APP_VER){
+      const bar=document.getElementById('updBar');
+      if(bar){bar.style.display='flex';bar.querySelector('b').textContent='新しいバージョン '+m[1]+' があります';}
+      return true;
+    }
+    if(!silent)toast('最新版です（'+APP_VER+'）');
+    return false;
+  }catch(e){ if(!silent)toast('確認できませんでした'); return false; }
+}
+function exportProgress(){
+  return JSON.stringify({v:1,ver:APP_VER,d:{xp:state.xp,maxCombo:state.maxCombo,ach:state.ach,
+    cards:state.cards,stats:state.stats,best:state.best,streak:state.streak,
+    taBest:state.taBest,cardMile:state.cardMile,stat:state.stat}});
+}
+function copyProgress(){
+  const t=exportProgress();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(()=>toast('コピーしました ✓')).catch(()=>selCopy());
+  }else selCopy();
+}
+function selCopy(){
+  const el=document.getElementById('bkText'); if(!el){toast('コピーできませんでした');return;}
+  el.removeAttribute('readonly'); el.select(); el.setSelectionRange(0,999999);
+  try{ document.execCommand('copy'); toast('コピーしました ✓'); }catch(e){ toast('長押しして手動でコピーしてください'); }
+  el.setAttribute('readonly','');
+}
+function importProgress(){
+  const raw=(document.getElementById('impText')||{}).value||'';
+  if(!raw.trim()){toast('貼り付けてから読み込んでください');return;}
+  let o; try{ o=JSON.parse(raw.trim()); }catch(e){ toast('形式が正しくありません'); return; }
+  const d=o&&o.d?o.d:null; if(!d){toast('進捗データが見つかりません');return;}
+  if(!confirm('いまの記録を、貼り付けた内容で置きかえます。よろしいですか？'))return;
+  state.xp=d.xp||0; state.maxCombo=d.maxCombo||0; state.ach=d.ach||[];
+  state.cards=d.cards||[]; state.stats=d.stats||{}; state.best=d.best||{};
+  state.streak=d.streak||{day:'',count:0}; state.taBest=d.taBest||0;
+  state.cardMile=d.cardMile||0; if(d.stat)state.stat=d.stat;
+  save(); toast('記録を復元しました ✓'); renderHome();
+}
+function renderBackup(){
+  const solved=Object.keys(state.stats).length;
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ もどる</button>
+    <div class="qhead"><h2>💾 記録の保存</h2></div>
+    <p class="help" style="margin-bottom:12px">学習の記録はこの端末の中だけに保存されています。機種変更のときや、ホーム画面のアイコンを入れ直すときは、ここで書き出して持ち出せます。</p>
+    <div class="statcard" style="display:block;padding:16px">
+      <div style="font-size:12px;color:var(--sub);font-weight:700;margin-bottom:8px">いまの記録（${solved}問 / Lv.${lvlInfo(state.xp).level} / ${state.xp.toLocaleString()} XP）</div>
+      <textarea id="bkText" readonly style="width:100%;min-height:110px;font-size:11px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px">${exportProgress()}</textarea>
+      <button class="btn btn-primary" style="margin-top:10px" onclick="copyProgress()">📋 コピーする</button>
+    </div>
+    <p class="help" style="margin:14px 0 8px">▼ 別の端末やアイコンで復元する場合は、上でコピーした内容をここに貼り付けます。</p>
+    <div class="statcard" style="display:block;padding:16px">
+      <textarea id="impText" placeholder="ここに貼り付け" style="width:100%;min-height:90px;font-size:11px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px"></textarea>
+      <button class="btn btn-ghost" style="margin-top:10px" onclick="importProgress()">読み込む</button>
+    </div>
+    <p class="help" style="margin-top:10px">読み込むと、いまの記録は置きかえられます。</p>`;
+}
+function renderHome(){
+  const ids=Object.keys(state.stats);
+  const solved=ids.length;
+  let c=0,t=0;
+  ids.forEach(k=>{c+=state.stats[k].c;t+=state.stats[k].c+state.stats[k].w});
+  const rate=t?Math.round(c/t*100):0;
+  const C=2*Math.PI*40,off=C*(1-solved/Q.length);
+  $('rankPill').textContent='総合 '+(t?rankOf(rate):'--');
+  const lvs=['all','easy','std','hard'].map(k=>{
+    const n=k==='all'?'すべて':LV[k].n, d=k==='all'?'全レベル':LV[k].d;
+    return `<div class="lvbtn ${curLv===k?'on':''}" onclick="setLv('${k}')"><span class="n">${n}</span><span class="d">${d}</span></div>`;
+  });
+  // 4つ並ぶので grid を4分割に
+  const fs=FIELDS.map(([id,name])=>{
+    const all=pool(id,curLv).length;
+    const done=pool(id,curLv).filter(q=>state.stats[q.id]).length;
+    const pct=all?Math.round(done/all*100):0;
+    return `<div class="fbtn" onclick="startQuiz('${id}')"><div class="ic">${FICON[id]||'🧫'}</div>
+      <div class="n">${name}</div><div class="m">${all}問中 ${done}問クリア</div>
+      <div class="bar"><i style="width:${pct}%"></i></div></div>`;
+  }).join('');
+  const wk=weak().length;
+  screen.innerHTML=`
+    <div class="statcard">
+      <div class="ring"><svg width="92" height="92">
+        <circle cx="46" cy="46" r="40" fill="none" stroke="var(--border)" stroke-width="9"/>
+        <circle cx="46" cy="46" r="40" fill="none" stroke="var(--primary)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"/>
+      </svg><div class="in"><b>${solved}</b><small>/${Q.length}問</small></div></div>
+      <div class="stinfo"><h2>学習のきろく</h2>
+        <div class="row"><div>正答率<b>${rate}%</b></div><div>ランク<b>${t?rankOf(rate):'--'}</b></div></div></div>
+    </div>
+    <div class="statcard" style="padding:14px 20px;gap:12px;cursor:pointer" onclick="renderTitles()">
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+          <span style="font-family:Poppins;font-weight:800;font-size:18px;color:var(--accent)">Lv.${lvlInfo(state.xp).level}</span> <span style="font-size:12px;font-weight:800;color:var(--primary)">${evoTitle(lvlInfo(state.xp).level).e} ${evoTitle(lvlInfo(state.xp).level).n}</span>
+          <span style="font-size:11px;color:var(--sub);font-weight:700">${state.streak.count>=2?'🔥 '+state.streak.count+'日連続 ›':'学びの記録 ›'}</span>
+        </div>
+        <div class="bar-top" style="margin:0 0 4px"><i style="width:${lvlInfo(state.xp).max?100:lvlInfo(state.xp).cur/lvlInfo(state.xp).need*100}%"></i></div>
+        <div style="font-size:10px;color:var(--sub);font-weight:700;text-align:right">${lvlInfo(state.xp).max?'最高到達！ 累計 '+state.xp.toLocaleString()+' XP':'あと '+(lvlInfo(state.xp).need-lvlInfo(state.xp).cur).toLocaleString()+' XP でレベルアップ'}</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost" style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center" onclick="renderZukan()"><span>📖 社会の図鑑</span><span style="font-family:Poppins;font-weight:800;color:var(--accent)">${cardsNormal().filter(c=>state.cards.includes(c.id)).length}/${cardsNormal().length}</span></button>
+    <div class="statcard" style="display:block;padding:16px 18px">
+      <h2 style="font-size:13px;font-weight:900;margin-bottom:10px">📊 難易度べつのきろく</h2>
+      ${['easy','std','hard'].map(k=>{
+        const qs=Q.filter(q=>q.lv===k);
+        const done=qs.filter(q=>state.stats[q.id]).length;
+        let c=0,t=0;qs.forEach(q=>{const st=state.stats[q.id];if(st){c+=st.c;t+=st.c+st.w;}});
+        const rate=t?Math.round(c/t*100):0;
+        const pct=qs.length?done/qs.length*100:0;
+        return `<div class="lvstat"><span class="ln lv-${k}">${LV[k].n}</span><div class="lb"><i class="lv-${k}" style="width:${pct}%"></i></div><span class="lnum">${done}/${qs.length}</span><span class="lrate">${t?rate+'%':'--'}</span></div>`;
+      }).join('')}
+    </div>
+    <div class="label">🎚 難易度をえらぶ</div>
+    <div class="lvrow" style="grid-template-columns:repeat(4,1fr)">${lvs.join('')}</div>
+    <div class="label">⚔️ チャレンジ</div>
+    <div class="row2" style="margin-bottom:10px">
+      <button class="btn btn-primary" onclick="startQuiz('all')">🎲 ミックス10問</button>
+      <button class="btn btn-accent" onclick="startQuiz('all',true)">⏱ タイムアタック</button>
+    </div>
+    ${wk?`<button class="btn btn-ghost" style="margin-bottom:10px" onclick="startQuiz('weak')">🔁 苦手だけ復習（${wk}問）</button>`:''}
+    <div class="label">🧫 分野べつ</div>
+    <div class="fields">${fs}</div>
+    <div class="label">🏅 実績（${ACH.filter(a=>state.ach.includes(a.id)).length}/${ACH.length}）</div>
+    <div class="ach-grid">
+      ${ACH.map(a=>{const got=state.ach.includes(a.id);
+        return `<div class="achb ${got?'got':''}"><div class="an">${got?'🏅':'🔒'} ${a.name}</div><div class="ad">${a.desc}</div></div>`;}).join('')}
+    </div>
+    ${(()=>{const f=ACH_SECRET.filter(a=>state.ach.includes(a.id));
+      return f.length?`<div class="label">🕵️ 隠し実績（${f.length}）</div><div class="ach-grid">${
+        f.map(a=>`<div class="achb got" style="border-color:#7B8BFF"><div class="an">🕵️ ${a.name}</div><div class="ad">${a.desc}</div></div>`).join('')}</div>`:'';})()}
+    <p class="help">難易度を選ぶと、分野べつ・ミックスの出題がそのレベルにしぼられるよ。XPは難しい問題ほど多くもらえる（入試レベルは1問14XP）。</p>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn btn-ghost" style="flex:1;font-size:12px;padding:11px" onclick="checkUpdate(false)">🔄 更新を確認</button>
+      <button class="btn btn-ghost" style="flex:1;font-size:12px;padding:11px" onclick="renderBackup()">💾 記録の保存</button>
+    </div>
+    <p class="help" style="text-align:center;margin-top:8px;opacity:.6">バージョン ${APP_VER}</p>`;
+}
+function setLv(k){curLv=k;renderHome();}
+function renderTitles(){
+  const lv=lvlInfo(state.xp).level;
+  const rows=EVO.map((t,i)=>{
+    const n=i+1, got=n<=lv, cur=n===lv;
+    const need=(()=>{let acc=0;for(let k=1;k<n;k++)acc+=xpNeed(k);return acc;})();
+    return `<div class="evr ${got?'got':''} ${cur?'cur':''}">
+      <span class="evn">${n}</span>
+      <span class="eve">${got?t.e:'🔒'}</span>
+      <div class="evb">
+        <div class="evt">${got?esc(t.n):'？？？'}</div>
+        <div class="evd">${cur?'いまここ':got?'到達済み':'必要 '+need.toLocaleString()+' XP'}</div>
+      </div>
+    </div>`;
+  }).join('');
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ 戻る</button>
+    <div class="qhead"><h2>🗺 学びの記録</h2><span class="combo" style="color:var(--accent)">${lv}/${EVO.length}</span></div>
+    <p class="help" style="margin-bottom:12px">レベルが上がるたびに称号が変わる。地図を読むことから始まり、歴史と社会のしくみを知り、世界を見わたす人へ。</p>
+    ${rows}
+    <button class="btn btn-ghost" style="margin-top:10px" onclick="renderHome()">ホームに戻る</button>`;
+}
+function renderZukan(){
+  const have=new Set(state.cards);
+  const norm=cardsNormal();
+  const got=norm.filter(c=>have.has(c.id)).length;
+  const sec=(r,label)=>{
+    const cs=CARDS.filter(c=>c.r===r);
+    return `<div class="label">${label}（${cs.filter(c=>have.has(c.id)).length}/${cs.length}）</div>`+
+      cs.map(c=>have.has(c.id)
+        ?`<div class="zkr got"><span class="zke">${c.e}</span><div class="zkb"><div class="zkn">${c.n} <span class="zktag ${c.r}">${c.r==='SR'?'超レア':c.r==='R'?'レア':'ふつう'}</span></div><div class="zkd">${c.d}</div></div></div>`
+        :`<div class="zkr"><span class="zke">🔒</span><div class="zkb"><div class="zkn" style="color:var(--sub)">？？？</div><div class="zkd">レベルアップ・実績・正解数の節目で手に入る</div></div></div>`).join('');
+  };
+  const hid=CARDS.filter(c=>c.r==='H'&&have.has(c.id));
+  const hidSec=hid.length?`<div class="label">🔮 隠し図鑑（${hid.length}）</div>`+
+    hid.map(c=>`<div class="zkr got" style="border-color:#7B8BFF"><span class="zke">${c.e}</span><div class="zkb"><div class="zkn">${c.n} <span class="zktag H">隠し</span></div><div class="zkd">${c.d}</div></div></div>`).join(''):'';
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ 戻る</button>
+    <div class="qhead"><h2>📖 社会の図鑑</h2><span class="combo" style="color:var(--accent)">${got}/${norm.length} 発見</span></div>
+    ${got>=norm.length?'<div class="statcard" style="justify-content:center"><b style="color:var(--accent)">🏆 コンプリート！</b></div>':''}
+    <p class="help" style="margin-bottom:10px">歴史や地理、社会のしくみにまつわる豆知識を集める図鑑。レベルアップ（2つごと）・実績解除・正解数の節目・7日連続学習で手に入る。</p>
+    ${hidSec}
+    ${sec('SR','⭐ 超レア')}
+    ${sec('R','🔹 レア')}
+    ${sec('N','・ ふつう')}`;
+}
+
+let g={list:[],i:0,score:0,miss:[],answered:false,combo:0,maxCombo:0,ta:false,t:0,timer:null,field:'all'};
+function startQuiz(field,ta){
+  let list;
+  if(field==='weak'){list=shuffle(weak());if(!list.length){toast('苦手はまだないよ');return;}list=list.slice(0,10);}
+  else{list=pool(field,curLv);
+    if(list.length<4){toast('この条件の問題が足りないよ');return;}
+    list=shuffle(list).slice(0,ta?15:10);}
+  g={list,i:0,score:0,miss:[],answered:false,combo:0,maxCombo:0,ta:!!ta,t:ta?20:0,timer:null,field};
+  renderQuiz();
+}
+function renderQuiz(){
+  if(g.i>=g.list.length)return finish();
+  clearInterval(g.timer);
+  const q=g.list[g.i];g.answered=false;
+  if(g.ta)g.t=20;
+  const opts=shuffle(q.ch.map((c,k)=>({c,k})));
+  screen.innerHTML=`
+    <button class="back" onclick="quitQuiz()">‹ もどる</button>
+    <div class="qhead"><div class="left"><h2>${g.ta?'⏱ タイムアタック':'🧫 クイズ'}</h2>
+      ${g.combo>=2?`<span class="combo">🔥 ${g.combo}コンボ</span>`:''}</div>
+      ${g.ta?`<span class="timer" id="tm">${g.t}</span>`:`<span class="combo">${g.i+1}/${g.list.length}</span>`}</div>
+    <div class="bar-top"><i style="width:${g.i/g.list.length*100}%"></i></div>
+    <div class="qcard">
+      <div class="qmeta"><span class="tagf">${esc(fieldName(q.f))}</span><span class="taglv ${q.lv}">${LV[q.lv].n}</span></div>
+      <div class="qtext">${esc(q.q)}</div>
+    </div>
+    <div class="choices">${opts.map(o=>`<button class="choice" data-k="${o.k}" onclick="answer(${o.k})">${esc(o.c)}</button>`).join('')}</div>
+    <div id="fb"></div>`;
+  if(g.ta){g.timer=setInterval(()=>{g.t--;const el=$('tm');
+    if(el){el.textContent=g.t;if(g.t<=5)el.classList.add('warn');}
+    if(g.t<=0){clearInterval(g.timer);if(!g.answered)answer(-1);}},1000);}
+}
+function answer(k){
+  if(g.answered)return;g.answered=true;clearInterval(g.timer);
+  const q=g.list[g.i],ok=k===q.a;
+  document.querySelectorAll('.choice').forEach(b=>{const kk=+b.dataset.k;
+    if(kk===q.a)b.classList.add('correct');else if(kk===k)b.classList.add('wrong');else b.classList.add('dim');b.onclick=null;});
+  const st=state.stats[q.id]||{c:0,w:0};
+  bumpQ();
+  if(ok)setTimeout(checkCardMilestone,50);
+  if(!state.stat.fields)state.stat.fields=[];
+  if(!state.stat.fields.includes(q.f)){state.stat.fields.push(q.f);}
+  if(ok){g.score++;g.combo++;g.maxCombo=Math.max(g.maxCombo,g.combo);
+    if(g.combo>state.maxCombo)state.maxCombo=g.combo;
+    st.c++;
+    addXp(XPLV[q.lv]+(g.combo>=5?10:g.combo>=3?5:0));touchStreak();
+    pop(g.combo>=3?14:8);}
+  else{g.combo=0;g.miss.push(q);st.w++;}
+  state.stats[q.id]=st;save();
+  const head=k===-1?'⏰ 時間切れ':(ok?'⭕ 正解':'❌ 不正解');
+  $('fb').innerHTML=`<div class="exp"><b>${head}</b>　${esc(q.ex)}</div>
+    <button class="btn btn-primary" style="margin-top:12px" onclick="next()">次へ ›</button>`;
+  $('fb').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function next(){g.i++;renderQuiz();}
+function quitQuiz(){clearInterval(g.timer);renderHome();}
+function finish(){
+  clearInterval(g.timer);
+  const total=g.list.length,rate=Math.round(g.score/total*100),rk=rankOf(rate);
+  const key=(g.field||'all')+'_'+curLv+(g.ta?'_ta':'');
+  const prev=state.best[key]||0;const isBest=g.score>prev;
+  if(isBest){state.best[key]=g.score;save();}
+  unlock('first');
+  if(g.ta&&g.score>state.taBest){state.taBest=g.score;save();}
+  if(!g.ta&&total>=10&&g.score===total)unlock('perfect');
+  checkAch();
+  const msg={S:'完璧！文句なし',A:'すばらしい理解度',B:'いい調子、あと少し',C:'解説を読んで固めよう',D:'まずは易しめから'}[rk];
+  const miss=g.miss.length?`<div class="label" style="margin-top:4px">まちがえた問題</div>
+    <div class="misslist">${g.miss.map(q=>`<div class="r"><div class="q">${esc(q.q)}</div><div class="a">正解: ${esc(q.ch[q.a])}</div></div>`).join('')}</div>`:'';
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ もどる</button>
+    <div class="result">
+      <div class="rank">${rk}</div>
+      <div class="big">${g.score}<span style="font-size:22px;color:var(--sub)">/${total}</span></div>
+      <h2>${msg}</h2>
+      <p>正答率 ${rate}% ／ 最大 ${g.maxCombo} コンボ</p>
+      ${isBest?'<p style="color:var(--accent);font-weight:800">🏅 自己ベスト更新！</p>':`<p>この条件のベスト: ${Math.max(prev,g.score)}問</p>`}
+    </div>
+    ${miss}
+    <div class="row2" style="margin-top:8px">
+      <button class="btn btn-ghost" onclick="renderHome()">ホーム</button>
+      <button class="btn btn-primary" onclick="startQuiz('${g.field}',${g.ta})">もう一回</button>
+    </div>`;
+  if(rate>=85)setTimeout(()=>pop(18),200);
+}
+renderHome();
+setTimeout(()=>checkUpdate(true),1500);
+</script>
+</body>
+</html>
