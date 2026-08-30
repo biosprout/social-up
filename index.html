@@ -136,6 +136,19 @@
   .evr .evt{font-size:13px;font-weight:800;line-height:1.35}
   .evr .evd{font-family:'Poppins';font-size:10px;color:var(--sub);font-weight:700;margin-top:2px}
   .evr.cur .evd{color:var(--accent)}
+  .odr{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:11px 12px;margin-bottom:8px}
+  .odr.ok{border-color:var(--primary);background:var(--panel2)}
+  .odr.ng{border-color:var(--danger)}
+  .odr .odn{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--panel2);color:var(--sub);font-family:Poppins;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .odr.ok .odn{background:var(--primary);color:#241A12}
+  .odr .odb{flex:1;min-width:0}
+  .odr .odt{font-size:13.5px;font-weight:700;line-height:1.45}
+  .odr .odd{font-size:11px;color:var(--sub);line-height:1.6;margin-top:4px}
+  .odr .odd b{color:var(--accent)}
+  .odr .odmark{font-size:16px;flex:0 0 auto}
+  .odr .odbtns{display:flex;flex-direction:column;gap:3px;flex:0 0 auto}
+  .odr .odbtns button{width:34px;height:24px;border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:7px;font-size:11px;line-height:1;padding:0}
+  .odr .odbtns button:disabled{opacity:.3}
   .zkr{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;opacity:.55}
   .zkr.got{opacity:1}
   .zke{font-size:26px;flex:0 0 auto}
@@ -360,6 +373,22 @@ const Q=[
   {id:'c_s17',f:'civ',lv:'std',q:'ワーク・ライフ・バランスの考え方として正しいものはどれか。',ch:['仕事と生活の両立を図る','仕事を最優先する','働かないことを勧める','賃金を上げる'],a:0,ex:'長時間労働の是正や育児・介護との両立を進める考え方。'},
   {id:'c_s18',f:'civ',lv:'std',q:'企業の社会的責任（CSR）に含まれるものはどれか。',ch:['環境への配慮や地域貢献','利益の最大化のみ','株価を上げること','納税だけ'],a:0,ex:'利益追求だけでなく、環境・人権・地域への責任を果たすことが求められる。'}
 ];
+const ORDER_Q=[
+  {id:'o_e1',lv:'easy',q:'古代の日本のできごとを古い順に並べよう。',items:[['稲作が伝わり弥生時代が始まる','紀元前4世紀ごろ','大陸から伝わり、ムラができ貧富の差が生まれた'],['卑弥呼が魏に使いを送る','239年','魏志倭人伝に記され、「親魏倭王」の称号を得た'],['大和政権が各地を統一していく','5世紀ごろ','前方後円墳が各地に広がったことがその証拠'],['聖徳太子が冠位十二階を定める','603年','家柄ではなく能力で役人を登用しようとした'],['大化の改新が始まる','645年','中大兄皇子と中臣鎌足が蘇我氏を倒した']]},
+  {id:'o_e2',lv:'easy',q:'奈良時代から平安時代のできごとを古い順に並べよう。',items:[['平城京に都を移す','710年','唐の長安にならった都。奈良時代の始まり'],['聖武天皇が東大寺の大仏をつくらせる','743年','ききんや疫病が続き、仏教の力で国を安定させようとした'],['平安京に都を移す','794年','桓武天皇が政治を立て直すために遷都した'],['遣唐使が停止される','894年','菅原道真の提案。これ以降、国風文化が発達する'],['藤原道長が摂関政治の全盛期を築く','11世紀初め','娘を次々と天皇の后とし、権力を握った']]},
+  {id:'o_e3',lv:'easy',q:'武士が力をつけていく流れを古い順に並べよう。',items:[['平清盛が太政大臣になる','1167年','武士として初めて朝廷の最高位についた'],['源頼朝が鎌倉に幕府を開く','1185〜92年ごろ','守護と地頭を置き、武士による政権が始まった'],['承久の乱が起こる','1221年','後鳥羽上皇が敗れ、幕府の力が西国にも及んだ'],['元寇が起こる','1274年・1281年','2度の襲来を退けたが、恩賞が不十分で幕府は弱体化した'],['足利尊氏が室町幕府を開く','1338年','鎌倉幕府の滅亡後、京都に幕府を開いた']]},
+  {id:'o_e4',lv:'easy',q:'戦国から江戸のはじまりまでを古い順に並べよう。',items:[['鉄砲が種子島に伝わる','1543年','戦い方が大きく変わり、城の造りにも影響した'],['ザビエルがキリスト教を伝える','1549年','鹿児島に上陸。南蛮貿易とともに広まった'],['織田信長が室町幕府を滅ぼす','1573年','将軍足利義昭を追放した'],['豊臣秀吉が全国を統一する','1590年','検地と刀狩で兵農分離を進めた'],['徳川家康が江戸幕府を開く','1603年','関ヶ原の戦いに勝ち、征夷大将軍となった']]},
+  {id:'o_e5',lv:'easy',q:'幕末から明治のできごとを古い順に並べよう。',items:[['ペリーが浦賀に来航する','1853年','翌年、日米和親条約が結ばれ開国した'],['日米修好通商条約が結ばれる','1858年','領事裁判権を認め関税自主権がない不平等条約だった'],['大政奉還が行われる','1867年','徳川慶喜が政権を朝廷に返上した'],['廃藩置県が行われる','1871年','藩を廃止して県を置き、中央集権を固めた'],['大日本帝国憲法が発布される','1889年','天皇が定める欽定憲法だった']]},
+  {id:'o_s1',lv:'std',q:'明治から大正のできごとを古い順に並べよう。',items:[['民撰議院設立建白書が出される','1874年','板垣退助らが国会の開設を求め、自由民権運動が始まった'],['日清戦争が起こる','1894年','下関条約で台湾などを得たが、三国干渉で遼東半島は返還した'],['日露戦争が起こる','1904年','勝利したが賠償金が得られず、国民の不満が高まった'],['韓国を併合する','1910年','以後1945年まで植民地支配が続いた'],['第一次世界大戦に参戦する','1914年','ヨーロッパの生産が止まり、日本は大戦景気となった']]},
+  {id:'o_s2',lv:'std',q:'大正から昭和初期のできごとを古い順に並べよう。',items:[['米騒動が起こる','1918年','米価高騰への抗議。これを機に初の本格的な政党内閣が成立した'],['関東大震災が起こる','1923年','復興の負担が経済を圧迫し、のちの金融恐慌の一因になった'],['普通選挙法と治安維持法が成立する','1925年','選挙権の拡大と思想統制が同じ年に進んだ'],['満州事変が起こる','1931年','翌年に満州国を建国。国際的な孤立が進んだ'],['国際連盟を脱退する','1933年','満州国が認められず、日本は連盟を去った']]},
+  {id:'o_s3',lv:'std',q:'第二次世界大戦前後のできごとを古い順に並べよう。',items:[['日中戦争が始まる','1937年','盧溝橋事件をきっかけに全面戦争へ発展した'],['太平洋戦争が始まる','1941年','真珠湾攻撃とマレー半島上陸で開戦した'],['ポツダム宣言を受諾する','1945年8月','広島・長崎への原爆投下とソ連参戦を経て降伏した'],['日本国憲法が公布される','1946年11月','翌年5月3日に施行された'],['サンフランシスコ平和条約が結ばれる','1951年','翌年発効し独立を回復。同時に日米安全保障条約も結ばれた']]},
+  {id:'o_s4',lv:'std',q:'戦後日本の歩みを古い順に並べよう。',items:[['日ソ共同宣言が出される','1956年','ソ連との国交回復により、国際連合への加盟が実現した'],['東京オリンピックが開かれる','1964年','新幹線や高速道路が整備され、高度経済成長を象徴した'],['公害対策基本法が制定される','1967年','四大公害病を受け、環境政策が本格化した'],['沖縄が日本に復帰する','1972年','同じ年に日中共同声明で中国との国交も正常化した'],['石油危機が起こる','1973年','高度経済成長が終わり、省エネルギーへ舵が切られた']]},
+  {id:'o_s5',lv:'std',q:'世界のできごとを古い順に並べよう。',items:[['ルネサンスがさかんになる','14〜16世紀','古代ギリシャ・ローマの文化を見直す動きがイタリアから広がった'],['コロンブスが大西洋を横断する','1492年','大航海時代が本格化し、世界が結びついていった'],['イギリスで産業革命が始まる','18世紀後半','蒸気機関により工場制機械工業が広まった'],['フランス革命が起こる','1789年','人権宣言が出され、市民が政治の主役になっていった'],['アメリカで南北戦争が起こる','1861年','リンカンが奴隷解放宣言を出した']]},
+  {id:'o_h1',lv:'hard',q:'土地制度の移り変わりを古い順に並べよう。',items:[['班田収授法が定められる','7〜8世紀','戸籍にもとづき口分田を与え、死ぬと返させた'],['墾田永年私財法が出される','743年','開墾地の永久私有を認め、公地公民の原則がくずれた'],['荘園が各地に広がる','平安時代','貴族や寺社が私有地を拡大していった'],['太閤検地が行われる','1582年〜','統一基準で土地を測り、荘園制が終わった'],['地租改正が行われる','1873年','地価の3%を現金で納めさせ、安定した財源を得た']]},
+  {id:'o_h2',lv:'hard',q:'幕府の政治改革を古い順に並べよう。',items:[['御成敗式目が定められる','1232年','北条泰時が武士の慣習をもとに定めた初の武家法'],['建武の新政が始まる','1334年','後醍醐天皇による親政。武士の不満で短期間で崩れた'],['享保の改革が行われる','1716年〜','徳川吉宗。目安箱や公事方御定書'],['寛政の改革が行われる','1787年〜','松平定信。倹約と学問の統制を進めた'],['天保の改革が行われる','1841年〜','水野忠邦。株仲間の解散などを行ったが失敗した']]},
+  {id:'o_h3',lv:'hard',q:'日本の外交の転換点を古い順に並べよう。',items:[['遣唐使が停止される','894年','大陸文化の摂取から、国風文化の発達へ転じた'],['勘合貿易が始まる','1404年','足利義満が明と行い、倭寇と正式な船を勘合で区別した'],['鎖国が完成する','1639年','ポルトガル船の来航を禁止。以後は長崎・対馬・薩摩・松前の4窓口'],['日米和親条約が結ばれる','1854年','下田と函館を開港し、200年余りの体制が終わった'],['関税自主権を回復する','1911年','小村寿太郎により、不平等条約の改正が完了した']]},
+  {id:'o_h4',lv:'hard',q:'近代の民主主義の広がりを古い順に並べよう。',items:[['自由民権運動が高まる','1870〜80年代','国会開設と憲法制定を求める運動が全国に広がった'],['第1回衆議院議員総選挙が行われる','1890年','有権者は直接国税15円以上を納める男子のみで、全人口の約1%だった'],['原敬が本格的な政党内閣を組織する','1918年','華族でない首相として「平民宰相」と呼ばれた'],['普通選挙法が成立する','1925年','納税額の制限がなくなり、25歳以上の男子に選挙権が与えられた'],['女性参政権が実現する','1945年','20歳以上の男女に選挙権が認められ、翌年の総選挙で女性議員が誕生した']]}
+];
 const LV={easy:{n:'基礎',d:'中1〜中2'},std:{n:'標準',d:'中3'},hard:{n:'入試',d:'高校受験'}};
 const FICON={geo:'🗺',his:'🏯',civ:'⚖️'};
 
@@ -488,6 +517,7 @@ const ACH=[
  {id:'lv20',name:'Lv.20 到達',desc:'最高レベルに到達'},
  {id:'cards10',name:'収集家',desc:'図鑑を10種あつめる'},
  {id:'cards34',name:'資料館長',desc:'図鑑をコンプリート'},
+ {id:'chrono',name:'年代の達人',desc:'年代整序で全問正解'},
 ];
 const ACH_SECRET=[
  {id:'nightowl',name:'夜行性',desc:'深夜0時〜4時に学習した'},
@@ -588,7 +618,7 @@ function pool(field,lv){return Q.filter(q=>(field==='all'||q.f===field)&&(lv==='
 function weak(){return Q.filter(q=>{const s=state.stats[q.id];return s&&s.w>0&&s.c<=s.w})}
 function rankOf(p){return p>=95?'S':p>=85?'A':p>=70?'B':p>=50?'C':'D'}
 
-const APP_VER='20260830a';
+const APP_VER='20260830b';
 function forceUpdate(){ location.replace(location.origin+location.pathname+'?v='+Date.now()); }
 async function checkUpdate(silent){
   try{
@@ -632,6 +662,79 @@ function importProgress(){
   state.streak=d.streak||{day:'',count:0}; state.taBest=d.taBest||0;
   state.cardMile=d.cardMile||0; if(d.stat)state.stat=d.stat;
   save(); toast('記録を復元しました ✓'); renderHome();
+}
+let od=null;
+function startOrder(){
+  const pool=ORDER_Q.filter(o=>curLv==='all'||o.lv===curLv);
+  if(!pool.length){toast('この難易度の整序問題はありません');return;}
+  const q=pool[Math.floor(Math.random()*pool.length)];
+  // 正解と違う並びになるまでシャッフル
+  let idx=q.items.map((_,i)=>i), t=0;
+  do{ idx=shuffle(q.items.map((_,i)=>i)); t++; }while(t<20&&idx.every((v,i)=>v===i));
+  od={q,order:idx,answered:false};
+  renderOrder();
+}
+function odMove(pos,dir){
+  if(od.answered)return;
+  const to=pos+dir;
+  if(to<0||to>=od.order.length)return;
+  const a=od.order;
+  [a[pos],a[to]]=[a[to],a[pos]];
+  renderOrder(); pop(4);
+}
+function odCheck(){
+  if(od.answered)return;
+  od.answered=true;
+  const n=od.order.length;
+  const hit=od.order.filter((v,i)=>v===i).length;
+  const perfect=hit===n;
+  const gain=perfect?n*6:hit*3;
+  addXp(gain);
+  if(perfect){
+    if(!state.best.order||n*6>state.best.order){state.best.order=n*6;}
+    unlock('chrono');
+  }
+  state.stat=state.stat||{}; bumpQ();
+  save(); renderOrder();
+}
+function renderOrder(){
+  const q=od.q, n=od.order.length;
+  const hit=od.answered?od.order.filter((v,i)=>v===i).length:0;
+  const rows=od.order.map((vi,pos)=>{
+    const it=q.items[vi];
+    const ok=od.answered&&vi===pos;
+    const cls=od.answered?(ok?'odr ok':'odr ng'):'odr';
+    return `<div class="${cls}">
+      <span class="odn">${pos+1}</span>
+      <div class="odb">
+        <div class="odt">${esc(it[0])}</div>
+        ${od.answered?`<div class="odd"><b>${esc(it[1])}</b> ${esc(it[2])}</div>`:''}
+      </div>
+      ${od.answered?`<span class="odmark">${ok?'⭕':'❌'}</span>`:
+        `<span class="odbtns">
+          <button onclick="odMove(${pos},-1)" ${pos===0?'disabled':''}>▲</button>
+          <button onclick="odMove(${pos},1)" ${pos===n-1?'disabled':''}>▼</button>
+        </span>`}
+    </div>`;
+  }).join('');
+  screen.innerHTML=`
+    <button class="back" onclick="renderHome()">‹ もどる</button>
+    <div class="qhead"><h2>🕰 年代整序</h2><span class="combo" style="color:var(--accent)">${LV[q.lv].n}</span></div>
+    <div class="qcard" style="margin-bottom:12px">
+      <div class="qtext" style="font-size:15px">${esc(q.q)}</div>
+      ${od.answered?'':'<p class="help" style="margin:8px 0 0">▲▼ で入れかえて、古い順（上が古い）に並べてください。</p>'}
+    </div>
+    ${rows}
+    ${od.answered?`
+      <div class="exp" style="margin-top:12px">
+        <b style="color:${hit===n?'var(--primary)':'var(--accent)'}">${hit===n?'⭕ 全問正解！':'　'+hit+' / '+n+' が正しい位置'}</b>
+        ${hit===n?'':'<br>正しい順序は下の年号のとおりです。もう一度挑戦してみましょう。'}
+      </div>
+      <div class="row2" style="margin-top:12px">
+        <button class="btn btn-primary" onclick="startOrder()">つぎの問題 ›</button>
+        <button class="btn btn-ghost" onclick="renderHome()">やめる</button>
+      </div>`
+    :`<button class="btn btn-primary" style="margin-top:12px" onclick="odCheck()">こたえあわせ</button>`}`;
 }
 function renderBackup(){
   const solved=Object.keys(state.stats).length;
@@ -707,6 +810,10 @@ function renderHome(){
     <div class="label">🎚 難易度をえらぶ</div>
     <div class="lvrow" style="grid-template-columns:repeat(4,1fr)">${lvs.join('')}</div>
     <div class="label">⚔️ チャレンジ</div>
+    <button class="btn btn-ghost" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center" onclick="startOrder()">
+      <span>🕰 年代整序（並べかえ）</span>
+      <span style="color:var(--sub);font-size:12px">${ORDER_Q.filter(o=>curLv==='all'||o.lv===curLv).length}問${state.best.order?` ／ ベスト ${state.best.order}点`:''}</span>
+    </button>
     <div class="row2" style="margin-bottom:10px">
       <button class="btn btn-primary" onclick="startQuiz('all')">🎲 ミックス10問</button>
       <button class="btn btn-accent" onclick="startQuiz('all',true)">⏱ タイムアタック</button>
