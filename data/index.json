@@ -1,0 +1,1 @@
+{"version":1,"sets":[{"id":"geo","name":"地理（世界と日本）","file":"geo.json","kind":"quiz","count":138},{"id":"his","name":"歴史（古代〜現代）","file":"his.json","kind":"quiz","count":144},{"id":"civ","name":"公民（政治・経済）","file":"civ.json","kind":"quiz","count":133},{"id":"order","name":"年代整序","file":"order.json","kind":"order","count":55}],"total":415,"orderTotal":55}
