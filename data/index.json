@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "contentVersion": "snapshot-5c198ab",
+  "contentVersion": "2026-09-02_social_weekly_001",
   "sets": [
-    {"id":"geo","name":"地理（世界と日本）","file":"geo.json","kind":"quiz","count":139},
-    {"id":"his","name":"歴史（古代〜現代）","file":"his.json","kind":"quiz","count":145},
-    {"id":"civ","name":"公民（政治・経済）","file":"civ.json","kind":"quiz","count":134},
+    {"id":"geo","name":"地理（世界と日本）","file":"geo.json","kind":"quiz","count":140},
+    {"id":"his","name":"歴史（古代〜現代）","file":"his.json","kind":"quiz","count":146},
+    {"id":"civ","name":"公民（政治・経済）","file":"civ.json","kind":"quiz","count":135},
     {"id":"order","name":"年代整序","file":"order.json","kind":"order","count":55}
   ],
-  "total": 418,
+  "total": 421,
   "orderTotal": 55
 }
