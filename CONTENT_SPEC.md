@@ -21,6 +21,10 @@ SOCIAL UP! の教材は2種類ある。
 | `scripts/format-content.mjs` | | データ整形（同上） |
 | `sw.js` | | Service Worker。オフライン用にデータをキャッシュする |
 
+## source of truth
+
+**教材の唯一の source of truth は `data/*.json` である。** 教材を直すときは JSON を直接編集し、`format-content.mjs` → `validate-content.mjs` を通して commit する。過去に JSON を生成するために使った元原稿（引き継ぎ資料の `add_*.js` `fix_*.js` など）は、生成が終わった時点で役目を終えた作業ファイルであり、今後の source of truth ではない。JSON と元原稿を別々に更新する運用はしない。
+
 ## 2. manifest（data/index.json）の schema
 
 ```json
@@ -157,7 +161,9 @@ file:// では fetch が動かないので、必ずサーバ経由で開く。
 
 - `sw.js` は index.html と `data/*.json` を network-first で取得する。オンラインなら常に最新 JSON が届き、オフライン時だけキャッシュを返す
 - JSON を更新するだけなら `sw.js` の `CACHE` 名を変えなくてよい
-- `data/` にファイルを増やしたら `sw.js` の `ASSETS` に追加し、`CACHE` の版数を上げる
+- `data/` にファイルを増やしたら `sw.js` の `ASSETS` に追加し、`CACHE` の版数を上げる（precache に失敗すると新しい Service Worker は install されず、旧版が使われ続ける。ASSETS の path 間違いに注意）
+- cache 名は `socialup-` で始まり（`CACHE_PREFIX`）、古い cache の掃除はこの prefix を持つものだけを対象にする。同じ origin にある他の BioSprout アプリの cache には触れない
+- 404 や 500 などの error response は cache に保存しない。network が error を返したときは、正常な cache があればそちらを返す
 
 ## 11. してはいけない変更
 
