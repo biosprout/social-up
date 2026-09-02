@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "contentVersion": "snapshot-5c198ab",
   "sets": [
     {"id":"geo","name":"地理（世界と日本）","file":"geo.json","kind":"quiz","count":139},
     {"id":"his","name":"歴史（古代〜現代）","file":"his.json","kind":"quiz","count":145},

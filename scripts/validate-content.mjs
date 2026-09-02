@@ -105,7 +105,8 @@ const ORDER_MIN = 3, ORDER_MAX = 5;   // 年代整序の1セットあたりの�
 
 const idx = readJson('index.json');
 if(!idx){ finish([]); }
-checkKeys('index.json', '', idx, ['version', 'sets', 'total', 'orderTotal'], []);
+checkKeys('index.json', '', idx, ['version', 'contentVersion', 'sets', 'total', 'orderTotal'], []);
+checkStr('index.json', '', 'contentVersion', idx.contentVersion);   // 教材版 ID（batch 取込で batch_id に更新。空にしない）
 if(idx.version !== 1) err('index.json', '', `version は 1 である必要があります（今は ${idx.version}）`);
 if(!Array.isArray(idx.sets)) { err('index.json', '', 'sets は配列である必要があります'); finish([]); }
 
